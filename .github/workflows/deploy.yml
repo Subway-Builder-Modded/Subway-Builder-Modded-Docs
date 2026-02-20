@@ -1,4 +1,4 @@
-name: Deploy Site
+name: Deploy Docusaurus (Org Repo)
 
 on:
   push:
@@ -12,21 +12,24 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
+        with:
+          ssh-key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '22'
+          node-version: 22
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Build site
+      - name: Build Docusaurus site
         run: npm run build
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
           publish_dir: ./build
+          force_orphan: true
           
