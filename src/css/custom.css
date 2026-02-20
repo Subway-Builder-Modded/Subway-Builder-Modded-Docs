@@ -16,6 +16,14 @@ code, pre {
 
 /* === Navbar / Header === */
 :root {
+  --ifm-navbar-background-color: #E3E3E3;   /* bg color */
+  --ifm-navbar-link-color: #242526;         /* links */
+  --ifm-navbar-link-hover-color: #3578E5;   /* hover links */
+  --ifm-navbar-height: 60px;
+  --ifm-navbar-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+[data-theme='dark'] {
   --ifm-navbar-background-color: #242526;   /* bg color */
   --ifm-navbar-link-color: #E3E3E3;         /* links */
   --ifm-navbar-link-hover-color: #3578E5;   /* hover links */
@@ -27,7 +35,6 @@ code, pre {
   font-family: 'Roboto', sans-serif;
   font-weight: 700;
   font-size: 1.3rem;
-  color: #ffffff;
 }
 
 .navbar__item a {
@@ -41,6 +48,13 @@ code, pre {
 
 /* === Footer === */
 :root {
+  --ifm-footer-background-color: #E3E3E3;  /* bg color */
+  --ifm-footer-color: #242526;             /* text color */
+  --ifm-footer-link-color: #242526;        /* links */
+  --ifm-footer-link-hover-color: #3578E5;  /* hover links */
+}
+
+[data-theme='dark'] {
   --ifm-footer-background-color: #242526;  /* bg color */
   --ifm-footer-color: #E3E3E3;             /* text color */
   --ifm-footer-link-color: #E3E3E3;        /* links */
@@ -51,4 +65,19 @@ code, pre {
   font-family: 'Roboto', sans-serif;
   font-weight: 500;
   font-size: 0.9rem;
+}
+
+/* === Wiki Icon === */
+:root {
+  --wiki-icon-color: #242526;
+}
+
+[data-theme='dark'] {
+  --wiki-icon-color: #E3E3E3;
+}
+
+.wiki-icon path {
+  fill: var(--wiki-icon-color);
+  vertical-align: text-bottom;
+  margin-right: 5px;
 }
