@@ -1,16 +1,25 @@
+// docusaurus.config.js
 module.exports = {
-  title: 'Subway Builder Modded',
-  tagline: 'Custom Maps & Mods Documentation',
+  title: 'Subway Builder Modded Docs',
+  tagline: 'All your mods and maps in one place',
   url: 'https://subwaybuildermodded.com',
   baseUrl: '/',
-  onBrokenLinks: 'ignore',
-  onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
-  organizationName: 'Subway-Builder-Modded',
+  organizationName: 'Subway-Builder-Modded', // GitHub org/user
   projectName: 'Subway-Builder-Modded-Docs',
+  deploymentBranch: 'gh-pages',
+  onBrokenLinks: 'throw',
+  onBrokenMarkdownLinks: 'warn',
   i18n: {
     defaultLocale: 'en',
-    locales: ['en','de','fr','es','it'],
+    locales: ['en', 'es', 'de', 'fr', 'it'],
+    localeConfigs: {
+      en: { label: 'English' },
+      es: { label: 'Español' },
+      de: { label: 'Deutsch' },
+      fr: { label: 'Français' },
+      it: { label: 'Italiano' },
+    },
   },
   presets: [
     [
@@ -18,7 +27,10 @@ module.exports = {
       {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          editUrl: 'https://github.com/Subway-Builder-Modded/Subway-Builder-Modded-Docs/edit/main/',
+          editUrl:
+            'https://github.com/Subway-Builder-Modded/Subway-Builder-Modded-Docs/edit/main/',
+          routeBasePath: 'docs',
+          showLastUpdateTime: true,
         },
         blog: false,
         theme: {
@@ -29,18 +41,27 @@ module.exports = {
   ],
   themeConfig: {
     navbar: {
-      title: 'Subway Builder',
+      title: 'Subway Builder Docs',
       logo: {
         alt: 'Subway Builder Logo',
-        src: 'img/favicon.ico',
+        src: 'img/logo.png',
       },
       items: [
-        {to: '/docs/intro', label: 'Docs', position: 'left'},
+        {
+          type: 'doc',
+          docId: 'intro',
+          position: 'left',
+          label: 'Docs',
+        },
+        {
+          href: 'https://github.com/Subway-Builder-Modded/Subway-Builder-Modded-Docs',
+          label: 'GitHub',
+          position: 'right',
+        },
         {
           type: 'localeDropdown',
           position: 'right',
         },
-        {href: 'https://github.com/Subway-Builder-Modded/Subway-Builder-Modded-Docs', label: 'GitHub', position: 'right'},
       ],
     },
     footer: {
@@ -49,17 +70,27 @@ module.exports = {
         {
           title: 'Docs',
           items: [
-            {label: 'Tutorial', to: '/docs/intro'},
+            {
+              label: 'Introduction',
+              to: '/docs/intro',
+            },
           ],
         },
         {
           title: 'Community',
           items: [
-            {label: 'GitHub', href: 'https://github.com/Subway-Builder-Modded/Subway-Builder-Modded-Docs'},
+            {
+              label: 'GitHub',
+              href: 'https://github.com/Subway-Builder-Modded/Subway-Builder-Modded-Docs',
+            },
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Subway Builder`,
+      copyright: `Copyright © ${new Date().getFullYear()} Subway Builder Modded`,
+    },
+    colorMode: {
+      defaultMode: 'light',
+      disableSwitch: false,
     },
   },
 };

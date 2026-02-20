@@ -1,24 +1,20 @@
 {
-  "name": "subwaybuildermodded",
+  "name": "subway-builder-modded-docs",
   "version": "1.0.0",
   "private": true,
-  "description": "Documentation site for Subway Builder Modded",
   "scripts": {
     "start": "docusaurus start",
     "build": "docusaurus build",
     "serve": "docusaurus serve",
-    "deploy": "GIT_USER=kaicardenas0618 docusaurus deploy",
-    "clean": "docusaurus clean"
+    "deploy": "docusaurus deploy",
+    "swizzle": "docusaurus swizzle"
   },
   "dependencies": {
     "@docusaurus/core": "^3.9.2",
     "@docusaurus/preset-classic": "^3.9.2",
     "@docusaurus/theme-classic": "^3.9.2",
-    "clsx": "^1.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
-  "devDependencies": {
-    "gh-pages": "^5.0.0"
-  }
+  "devDependencies": {}
 }
