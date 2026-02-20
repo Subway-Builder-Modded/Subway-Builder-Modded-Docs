@@ -7,8 +7,11 @@ module.exports = {
   organizationName: 'Subway-Builder-Modded',
   projectName: 'Subway-Builder-Modded-Docs',
   deploymentBranch: 'gh-pages',
-  onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
+  markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: 'throw', // 'throw', 'warn', or 'ignore'
+    },
+  },
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'es', 'de', 'fr', 'it'],
@@ -30,7 +33,15 @@ module.exports = {
           showLastUpdateTime: false,
           admonitions: true,
         },
-        blog: false,
+        blog: {
+          routeBasePath: 'updates',
+          showReadingTime: false,
+          blogSidebarTitle: 'Updates',
+          blogSidebarCount: 'ALL',
+          blogTitle: 'Updates',
+          blogDescription: 'Changlogs and release notes for the Subway Builder Mod Wiki website.',
+          postsPerPage: 1,
+        },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
         },
@@ -51,6 +62,10 @@ module.exports = {
     ],
   ],
   themeConfig: {
+    tableOfContents: {
+      minHeadingLevel: 2,
+      maxHeadingLevel: 5,
+    },
     navbar: {
       title: 'Subway Builder Mod Wiki',
       logo: {
@@ -72,7 +87,7 @@ module.exports = {
           `,
         },
         {
-          to: '/changelog',
+          to: 'updates',
           position: 'left',
           html: `
             <span class="updates-icon">
