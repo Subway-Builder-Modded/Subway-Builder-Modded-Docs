@@ -71,6 +71,22 @@ code, pre {
   padding: 2rem 1rem;
 }
 
+.wiki-icon,
+.updates-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--ifm-navbar-link-color);
+  transition: color 0.2s ease;
+}
+
+.wiki-icon:hover,
+.wiki-icon:focus,
+.updates-icon:hover,
+.updates-icon:focus {
+  color: var(--ifm-navbar-link-hover-color);
+}
+
 /* === Wiki Icon === */
 :root {
   --wiki-icon-color: #242526;
@@ -80,11 +96,6 @@ code, pre {
   --wiki-icon-color: #E3E3E3;
 }
 
-.wiki-icon path {
-  fill: var(--wiki-icon-color);
-  vertical-align: text-bottom;
-  margin-right: 5px;
-}
 
 /* === Updates Icon === */
 :root {
@@ -93,30 +104,4 @@ code, pre {
 
 [data-theme='dark'] {
   --updates-icon-color: #E3E3E3;
-}
-
-.updates-icon path {
-  fill: var(--updates-icon-color);
-  vertical-align: text-bottom;
-  margin-right: 5px;
-}
-
-/* === Admonitions === */
-.admonition {
-  border-left: 4px solid currentColor;
-  padding: 0.5rem 1rem;
-  margin: 1rem 0;
-  border-radius: 4px;
-}
-
-.admonition-note, .alert--note {
-  border-left-color: #1F6FEB;
-  background-color: #DCEEFB;
-  color: #1F6FEB;
-}
-
-[data-theme='dark'] .admonition-note,
-[data-theme='dark'] .alert--note {
-  background-color: #0D1F3C;
-  color: #DCEEFB;
 }
