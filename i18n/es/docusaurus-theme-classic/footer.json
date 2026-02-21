@@ -1,14 +1,22 @@
 {
   "link.title.Pages": {
     "message": "Páginas",
-    "description": "The title of the footer links column with title=Pages in the footer"
+    "description": "Páginas"
   },
   "link.title.Other Links": {
     "message": "Otros enlaces",
-    "description": "The title of the footer links column with title=Other Links in the footer"
+    "description": "Otros enlaces"
+  },
+  "link.item.label.Wiki": {
+    "message": "Wiki",
+    "description": "Wiki"
+  },
+  "link.item.label.Updates": {
+    "message": "Actualizaciones",
+    "description": "Actualizaciones"
   },
   "copyright": {
     "message": "© Wiki del Mod de Subway Builder 2026",
-    "description": "The footer copyright"
+    "description": "Derechos de autor"
   }
 }

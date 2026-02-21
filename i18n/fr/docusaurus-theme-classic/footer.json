@@ -7,6 +7,14 @@
     "message": "Autres liens",
     "description": "Autres liens"
   },
+  "link.item.label.Wiki": {
+    "message": "Wiki",
+    "description": "Wiki"
+  },
+  "link.item.label.Updates": {
+    "message": "Mises à jour",
+    "description": "Mises à jour"
+  },
   "copyright": {
     "message": "© Wiki du Mod Subway Builder 2026",
     "description": "Droits d'auteur"

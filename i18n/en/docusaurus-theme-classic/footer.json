@@ -1,22 +1,22 @@
 {
   "link.title.Pages": {
-    "message": "Seiten",
-    "description": "Seiten"
+    "message": "Pages",
+    "description": "Pages"
   },
   "link.title.Other Links": {
-    "message": "Weitere Links",
-    "description": "Weitere Links"
+    "message": "Other Links",
+    "description": "Other Links"
   },
   "link.item.label.Wiki": {
     "message": "Wiki",
     "description": "Wiki"
   },
   "link.item.label.Updates": {
-    "message": "Aktualisierungen",
-    "description": "Aktualisierungen"
+    "message": "Updates",
+    "description": "Updates"
   },
   "copyright": {
     "message": "© Subway Builder Mod Wiki 2026",
-    "description": "Urheberrecht"
+    "description": "Copyright"
   }
 }
