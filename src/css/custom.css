@@ -62,9 +62,13 @@ code, pre {
 }
 
 .footer {
-  font-family: 'Ubuntu', sans-serif;
   font-weight: 500;
   font-size: 0.9rem;
+  font-family: 'Ubuntu', sans-serif;
+  position: relative;
+  background-color: var(--ifm-footer-background-color);
+  color: var(--ifm-footer-color);
+  padding: 2rem 1rem;
 }
 
 /* === Wiki Icon === */
