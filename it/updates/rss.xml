@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+    <channel>
+        <title>Subway Builder Mod Wiki Blog</title>
+        <link>https://subwaybuildermodded.com/it/updates</link>
+        <description>Subway Builder Mod Wiki Blog</description>
+        <lastBuildDate>Sun, 22 Feb 2026 07:39:29 GMT</lastBuildDate>
+        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
+        <generator>https://github.com/jpmonette/feed</generator>
+        <language>it</language>
+        <item>
+            <title><![CDATA[Version 1.0.0]]></title>
+            <link>https://subwaybuildermodded.com/it/updates/1.0.0</link>
+            <guid>https://subwaybuildermodded.com/it/updates/1.0.0</guid>
+            <pubDate>Sun, 22 Feb 2026 07:39:29 GMT</pubDate>
+            <description><![CDATA[Subway Builder Mod Wiki - Version 1.0.0 Release Notes]]></description>
+            <content:encoded><![CDATA[<p>✨ Initial website release (issues can be reported at <a href="https://github.com/Subway-Builder-Modded/Subway-Builder-Modded-Docs" target="_blank" rel="noopener noreferrer" class="">https://github.com/Subway-Builder-Modded/Subway-Builder-Modded-Docs</a>)</p>]]></content:encoded>
+            <category>Releases</category>
+        </item>
+    </channel>
+</rss>

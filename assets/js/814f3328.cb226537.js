@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunksubway_builder_modded_docs=self.webpackChunksubway_builder_modded_docs||[]).push([[472],{5513(e){e.exports=JSON.parse('{"title":"Updates","items":[{"title":"Version 1.0.0","permalink":"/updates/1.0.0","unlisted":false,"date":"2026-02-22T07:39:29.000Z"}]}')}}]);

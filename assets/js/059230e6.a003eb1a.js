@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunksubway_builder_modded_docs=self.webpackChunksubway_builder_modded_docs||[]).push([[7],{9363(e){e.exports=JSON.parse('{"metadata":{"permalink":"/updates","page":1,"postsPerPage":1,"totalPages":1,"totalCount":1,"blogDescription":"Changlogs and release notes for the Subway Builder Mod Wiki website.","blogTitle":"Updates"}}')}}]);

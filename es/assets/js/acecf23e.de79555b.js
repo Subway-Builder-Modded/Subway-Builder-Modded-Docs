@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunksubway_builder_modded_docs=self.webpackChunksubway_builder_modded_docs||[]).push([[903],{1912(s){s.exports=JSON.parse('{"blogBasePath":"/es/updates","blogTitle":"Updates","authorsListPath":"/es/updates/authors"}')}}]);
