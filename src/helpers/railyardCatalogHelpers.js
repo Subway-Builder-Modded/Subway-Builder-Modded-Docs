@@ -237,9 +237,33 @@ export function DownloadInAppModal({ styles, selectedItem, nativeDownload, onClo
   useEffect(() => {
     if (!selectedItem) return undefined;
 
-    document.body.classList.add(styles.modalOpenBodyLock);
+    const body = document.body;
+    const html = document.documentElement;
+    const scrollY = window.scrollY;
+    const previousBodyOverflow = body.style.overflow;
+    const previousBodyTouchAction = body.style.touchAction;
+    const previousBodyPosition = body.style.position;
+    const previousBodyTop = body.style.top;
+    const previousBodyWidth = body.style.width;
+    const previousHtmlOverflow = html.style.overflow;
+
+    body.classList.add(styles.modalOpenBodyLock);
+    body.style.overflow = "hidden";
+    body.style.touchAction = "none";
+    body.style.position = "fixed";
+    body.style.top = `-${scrollY}px`;
+    body.style.width = "100%";
+    html.style.overflow = "hidden";
+
     return () => {
-      document.body.classList.remove(styles.modalOpenBodyLock);
+      body.classList.remove(styles.modalOpenBodyLock);
+      body.style.overflow = previousBodyOverflow;
+      body.style.touchAction = previousBodyTouchAction;
+      body.style.position = previousBodyPosition;
+      body.style.top = previousBodyTop;
+      body.style.width = previousBodyWidth;
+      html.style.overflow = previousHtmlOverflow;
+      window.scrollTo({ top: scrollY });
     };
   }, [selectedItem, styles.modalOpenBodyLock]);
 
@@ -259,6 +283,9 @@ export function DownloadInAppModal({ styles, selectedItem, nativeDownload, onClo
         clearTimeout(closeTimerRef.current);
       }
       document.body.classList.remove(styles.modalOpenBodyLock);
+      document.body.style.overflow = "";
+      document.body.style.touchAction = "";
+      document.documentElement.style.overflow = "";
     },
     [styles.modalOpenBodyLock],
   );

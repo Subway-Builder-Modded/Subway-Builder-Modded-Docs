@@ -152,6 +152,28 @@ export function formatUpdatedDate(isoDate, locale = undefined) {
   }).format(date);
 }
 
+export function getManifestUpdatedAt(manifest) {
+  const candidates = [
+    manifest?.updatedAt,
+    manifest?.updated_at,
+    manifest?.lastUpdated,
+    manifest?.last_updated,
+    manifest?.updated,
+    manifest?.date,
+    manifest?.releaseDate,
+  ];
+
+  for (const candidate of candidates) {
+    if (!candidate) continue;
+    const date = new Date(candidate);
+    if (!Number.isNaN(date.getTime())) {
+      return date.toISOString();
+    }
+  }
+
+  return null;
+}
+
 export function buildManifestUrl(type, id) {
   return `https://raw.githubusercontent.com/Subway-Builder-Modded/The-Railyard/main/${type}/${id}/manifest.json`;
 }

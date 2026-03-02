@@ -11,6 +11,7 @@ import {
   formatUpdatedDate,
   getFirstValue,
   getTitle,
+  getManifestUpdatedAt,
   normalizeImageList,
   normalizeTags,
   PAGE_SIZES,
@@ -39,11 +40,11 @@ const SORT_CONFIG = {
   id: { value: (item) => item.id, defaultDirection: "asc" },
 };
 
-const SPOTLIGHT_MOD_IDS = [
+const SPOTLIGHT_MODS = [
   // Add mod IDs here to spotlight them at the top of the list.
   "subwaybuilder-regions",
 ];
-const SPOTLIGHT_MOD_ID_SET = new Set(SPOTLIGHT_MOD_IDS);
+const SPOTLIGHT_MOD_SET = new Set(SPOTLIGHT_MODS);
 
 export default function RailyardModsPage() {
   const [items, setItems] = useState([]);
@@ -91,7 +92,8 @@ export default function RailyardModsPage() {
               const response = await fetch(buildManifestUrl(SOURCE.type, id));
               if (!response.ok) return null;
               const manifest = await response.json();
-              const updatedAt = await fetchUpdatedAt(SOURCE.type, id);
+              const fetchedUpdatedAt = await fetchUpdatedAt(SOURCE.type, id);
+              const updatedAt = fetchedUpdatedAt || getManifestUpdatedAt(manifest);
               const updatedAtDate = updatedAt ? new Date(updatedAt) : null;
 
               return {
@@ -177,7 +179,7 @@ export default function RailyardModsPage() {
     const regular = [];
 
     sorted.forEach((item) => {
-      if (SPOTLIGHT_MOD_ID_SET.has(item.id)) {
+      if (SPOTLIGHT_MOD_SET.has(item.id)) {
         spotlighted.push(item);
         return;
       }
@@ -258,7 +260,7 @@ export default function RailyardModsPage() {
             {translate({
               id: "railyard.mods.subtitle",
               message:
-                "Explore community mods, filter by tags, and surface the latest updates first.",
+                "Explore community mods, filter by tags, and see what's new.",
             })}
           </p>
           <Link to="/railyard/maps" className={sharedStyles.switchLink}>
@@ -361,7 +363,7 @@ export default function RailyardModsPage() {
           {paginated.map((item) => {
             const imageIndex = imageIndexById[item.id] || 0;
             const activeImage = item.images[imageIndex] || [];
-            const isSpotlighted = SPOTLIGHT_MOD_ID_SET.has(item.id);
+            const isSpotlighted = SPOTLIGHT_MOD_SET.has(item.id);
 
             return (
               <article
@@ -370,24 +372,26 @@ export default function RailyardModsPage() {
                 data-card-id={item.id}
               >
                 <header className={sharedStyles.cardHeader}>
-                  {isSpotlighted && (
-                    <img
-                      src="/assets/spotlight.svg"
-                      alt={translate({ id: "railyard.mods.spotlighted", message: "Spotlighted" })}
-                      className={sharedStyles.spotlightIcon}
-                    />
-                  )}
-                  {CARD_POPUP_ENABLED ? (
-                    <button
-                      type="button"
-                      className={sharedStyles.itemTitleButton}
-                      onClick={() => setSelectedItem(item)}
-                    >
-                      {item.title}
-                    </button>
-                  ) : (
-                    <span className={sharedStyles.itemTitleText}>{item.title}</span>
-                  )}
+                  <div className={sharedStyles.cardTitleWrap}>
+                    {isSpotlighted ? (
+                      <img
+                        src="/assets/spotlight.svg"
+                        alt={translate({ id: "railyard.mods.spotlighted", message: "Spotlighted" })}
+                        className={sharedStyles.spotlightIcon}
+                      />
+                    ) : null}
+                    {CARD_POPUP_ENABLED ? (
+                      <button
+                        type="button"
+                        className={sharedStyles.itemTitleButton}
+                        onClick={() => setSelectedItem(item)}
+                      >
+                        {item.title}
+                      </button>
+                    ) : (
+                      <span className={sharedStyles.itemTitleText}>{item.title}</span>
+                    )}
+                  </div>
                   <span className={sharedStyles.cardId}>{item.id}</span>
                 </header>
                 <p className={sharedStyles.updatedText}>
