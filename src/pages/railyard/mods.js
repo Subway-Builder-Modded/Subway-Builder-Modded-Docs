@@ -3,6 +3,15 @@ import Layout from "@theme/Layout";
 import Link from "@docusaurus/Link";
 import { translate } from "@docusaurus/Translate";
 import styles from "../../css/railyardMods.module.css";
+import sharedStyles from "../../css/railyardShared.module.css";
+import {
+  compareValues,
+  flattenRecord,
+  formatTagLabel,
+  getFirstValue,
+  getTitle,
+  normalizeImageList,
+} from "../../helpers/railyardHelpers";
 
 const SOURCE = {
   type: "mods",
@@ -10,128 +19,27 @@ const SOURCE = {
     "https://raw.githubusercontent.com/Subway-Builder-Modded/The-Railyard/main/mods/index.json",
 };
 
-const PAGE_SIZES = [9, 27, 54];
+const PAGE_SIZES = [12, 24, 48];
 
-const fieldPathLookup = {
-  title: ["name", "title", "displayName"],
-  description: ["description", "summary"],
-  author: ["author", "creator", "publisher"],
-  tags: ["tags", "categories", "labels"],
-  images: ["images", "gallery", "screenshots", "thumbnails"],
+const SORT_CONFIG = {
+  name: {
+    value: (item) => item.title,
+    defaultDirection: "asc",
+  },
+  id: {
+    value: (item) => item.id,
+    defaultDirection: "asc",
+  },
 };
 
-function getFirstValue(record, key) {
-  for (const path of fieldPathLookup[key] || []) {
-    if (Object.prototype.hasOwnProperty.call(record, path) && record[path] != null) {
-      return record[path];
-    }
-  }
-  return null;
-}
-
-function flattenRecord(record, prefix = "") {
-  if (record == null || typeof record !== "object") {
-    return [{ key: prefix || "value", value: String(record) }];
-  }
-
-  const rows = [];
-  Object.entries(record).forEach(([key, value]) => {
-    const path = prefix ? `${prefix}.${key}` : key;
-    if (Array.isArray(value)) {
-      rows.push({ key: path, value: JSON.stringify(value) });
-    } else if (value && typeof value === "object") {
-      rows.push(...flattenRecord(value, path));
-    } else {
-      rows.push({ key: path, value: String(value) });
-    }
-  });
-  return rows;
-}
-
-function toTitleCaseTag(tag) {
-  return tag
-    .split("-")
-    .filter(Boolean)
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join(" ");
-}
-
-function buildGithubImageCandidates(url) {
-  if (!url) return [];
-
-  const normalized = url.replace("/refs/heads/", "/").replace("?raw=true", "");
-  const candidates = [encodeURI(normalized)];
-
-  const githubMatch = normalized.match(
-    /^https:\/\/github\.com\/([^/]+)\/([^/]+)\/(?:blob|raw)\/([^/]+)\/(.+)$/,
-  );
-  if (githubMatch) {
-    const [, owner, repo, branch, rawPath] = githubMatch;
-    candidates.push(
-      `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${encodeURI(rawPath)}`,
-    );
-    candidates.push(`https://cdn.jsdelivr.net/gh/${owner}/${repo}@${branch}/${encodeURI(rawPath)}`);
-  }
-
-  const rawMatch = normalized.match(
-    /^https:\/\/raw\.githubusercontent\.com\/([^/]+)\/([^/]+)\/([^/]+)\/(.+)$/,
-  );
-  if (rawMatch) {
-    const [, owner, repo, branch, rawPath] = rawMatch;
-    candidates.push(`https://cdn.jsdelivr.net/gh/${owner}/${repo}@${branch}/${encodeURI(rawPath)}`);
-  }
-
-  return [...new Set(candidates)];
-}
-
-function normalizeImageList(manifest, id) {
-  const imageCandidates = getFirstValue(manifest, "images");
-  if (!imageCandidates) return [];
-
-  const toUrl = (value) => {
-    if (!value) return [];
-
-    if (typeof value === "string") {
-      if (value.startsWith("http")) return buildGithubImageCandidates(value);
-      const cleaned = value
-        .replace(/^\.\//, "")
-        .replace(new RegExp(`^mods/${id}/gallery/`), "")
-        .replace(new RegExp(`^${id}/gallery/`), "")
-        .replace(/^gallery\//, "")
-        .replace(/^mods\//, "")
-        .replace(/^\//, "");
-      const relative = `mods/${id}/gallery/${cleaned}`;
-      return [
-        `https://raw.githubusercontent.com/Subway-Builder-Modded/The-Railyard/main/${encodeURI(relative)}`,
-        `https://cdn.jsdelivr.net/gh/Subway-Builder-Modded/The-Railyard@main/${encodeURI(relative)}`,
-      ];
-    }
-
-    if (typeof value === "object") {
-      const nested = value.file || value.src || value.path || value.url;
-      return toUrl(nested);
-    }
-
-    return [];
+function getSortValue(sortBy) {
+  const [column, direction] = sortBy.split("-");
+  const config = SORT_CONFIG[column] || SORT_CONFIG.name;
+  const sortDirection = direction || config.defaultDirection;
+  return {
+    getValue: config.value,
+    descending: sortDirection === "desc",
   };
-
-  if (Array.isArray(imageCandidates)) {
-    return imageCandidates.map(toUrl).filter((candidateList) => candidateList.length > 0);
-  }
-
-  const singleUrl = toUrl(imageCandidates);
-  return singleUrl.length > 0 ? [singleUrl] : [];
-}
-
-function getTitle(manifest, id) {
-  return getFirstValue(manifest, "title") || id;
-}
-
-function compareValues(a, b) {
-  if (a == null && b == null) return 0;
-  if (a == null) return 1;
-  if (b == null) return -1;
-  return String(a).localeCompare(String(b), undefined, { numeric: true, sensitivity: "base" });
 }
 
 function MapPinPlaceholder() {
@@ -183,7 +91,7 @@ export default function RailyardModsPage() {
   const [query, setQuery] = useState("");
   const [selectedTags, setSelectedTags] = useState([]);
   const [sortBy, setSortBy] = useState("name-asc");
-  const [pageSize, setPageSize] = useState(27);
+  const [pageSize, setPageSize] = useState(24);
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
@@ -240,7 +148,7 @@ export default function RailyardModsPage() {
                     id: "railyard.mods.unknownAuthor",
                     message: "Unknown",
                   }),
-                images: normalizeImageList(manifest, id),
+                images: normalizeImageList(manifest, SOURCE.type, id),
                 fields: flattenRecord(manifest),
               };
             } catch {
@@ -290,10 +198,10 @@ export default function RailyardModsPage() {
         item.title,
         item.description,
         item.author,
-        item.tags.join(" "),
-        item.fields.map((field) => `${field.key} ${field.value}`).join(" "),
+        item.tags.join("-"),
+        item.fields.map((field) => `${field.key} ${field.value}`).join("-"),
       ]
-        .join(" ")
+        .join("-")
         .toLowerCase();
       return haystack.includes(lowered);
     });
@@ -303,17 +211,9 @@ export default function RailyardModsPage() {
     );
 
     return tagFiltered.sort((a, b) => {
-      switch (sortBy) {
-        case "name-desc":
-          return compareValues(b.title, a.title);
-        case "id-asc":
-          return compareValues(a.id, b.id);
-        case "id-desc":
-          return compareValues(b.id, a.id);
-        case "name-asc":
-        default:
-          return compareValues(a.title, b.title);
-      }
+      const { getValue, descending } = getSortValue(sortBy);
+      const comparison = compareValues(getValue(a), getValue(b));
+      return descending ? -comparison : comparison;
     });
   }, [items, query, selectedTags, sortBy]);
 
@@ -354,7 +254,9 @@ export default function RailyardModsPage() {
     if (totalPages <= 1) return null;
 
     return (
-      <nav className={`${styles.pagination} ${isTop ? styles.paginationTop : ""}`}>
+      <nav
+        className={`${styles.pagination} ${sharedStyles.pagination} ${isTop ? styles.paginationTop : ""}`}
+      >
         <button
           type="button"
           disabled={safePage <= 1}
@@ -424,7 +326,11 @@ export default function RailyardModsPage() {
           <div className={styles.controlRow}>
             <label>
               {translate({ id: "railyard.mods.sortBy", message: "Sort by" })}
-              <select value={sortBy} onChange={(event) => setSortBy(event.target.value)}>
+              <select
+                className={sharedStyles.select}
+                value={sortBy}
+                onChange={(event) => setSortBy(event.target.value)}
+              >
                 <option value="name-asc">
                   {translate({ id: "railyard.mods.sort.nameAsc", message: "Name (A → Z)" })}
                 </option>
@@ -443,6 +349,7 @@ export default function RailyardModsPage() {
             <label>
               {translate({ id: "railyard.mods.cardsPerPage", message: "Cards per page" })}
               <select
+                className={sharedStyles.select}
                 value={pageSize}
                 onChange={(event) => setPageSize(Number(event.target.value))}
               >
@@ -465,7 +372,7 @@ export default function RailyardModsPage() {
                   className={`${styles.tagButton} ${active ? styles.tagButtonActive : ""}`}
                   onClick={() => toggleTag(tag)}
                 >
-                  {toTitleCaseTag(tag)}
+                  {formatTagLabel(tag)}
                 </button>
               );
             })}
@@ -551,7 +458,7 @@ export default function RailyardModsPage() {
                         toggleTag(tag);
                       }}
                     >
-                      {toTitleCaseTag(tag)}
+                      {formatTagLabel(tag)}
                     </button>
                   ))}
                 </div>
