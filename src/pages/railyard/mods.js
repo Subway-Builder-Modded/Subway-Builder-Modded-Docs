@@ -39,6 +39,12 @@ const SORT_CONFIG = {
   id: { value: (item) => item.id, defaultDirection: "asc" },
 };
 
+const SPOTLIGHT_MOD_IDS = [
+  // Add mod IDs here to spotlight them at the top of the list.
+  "subwaybuilder-regions",
+];
+const SPOTLIGHT_MOD_ID_SET = new Set(SPOTLIGHT_MOD_IDS);
+
 export default function RailyardModsPage() {
   const [items, setItems] = useState([]);
   const [query, setQuery] = useState("");
@@ -161,11 +167,24 @@ export default function RailyardModsPage() {
       selectedTags.length === 0 ? true : selectedTags.every((tag) => item.tags.includes(tag)),
     );
 
-    return tagFiltered.sort((a, b) => {
+    const sorted = [...tagFiltered].sort((a, b) => {
       const { getValue, descending } = getSortValue(sortBy, SORT_CONFIG);
       const comparison = compareValues(getValue(a), getValue(b));
       return descending ? -comparison : comparison;
     });
+
+    const spotlighted = [];
+    const regular = [];
+
+    sorted.forEach((item) => {
+      if (SPOTLIGHT_MOD_ID_SET.has(item.id)) {
+        spotlighted.push(item);
+        return;
+      }
+      regular.push(item);
+    });
+
+    return [...spotlighted, ...regular];
   }, [items, query, selectedTags, sortBy]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
@@ -342,10 +361,22 @@ export default function RailyardModsPage() {
           {paginated.map((item) => {
             const imageIndex = imageIndexById[item.id] || 0;
             const activeImage = item.images[imageIndex] || [];
+            const isSpotlighted = SPOTLIGHT_MOD_ID_SET.has(item.id);
 
             return (
-              <article key={item.id} className={sharedStyles.card} data-card-id={item.id}>
+              <article
+                key={item.id}
+                className={`${sharedStyles.card} ${isSpotlighted ? sharedStyles.cardSpotlight : ""}`}
+                data-card-id={item.id}
+              >
                 <header className={sharedStyles.cardHeader}>
+                  {isSpotlighted && (
+                    <img
+                      src="/assets/spotlight.svg"
+                      alt={translate({ id: "railyard.mods.spotlighted", message: "Spotlighted" })}
+                      className={sharedStyles.spotlightIcon}
+                    />
+                  )}
                   {CARD_POPUP_ENABLED ? (
                     <button
                       type="button"
@@ -431,8 +462,13 @@ export default function RailyardModsPage() {
                 </div>
 
                 <details className={sharedStyles.details}>
-                  <summary>
-                    {translate({ id: "railyard.mods.allFields", message: "All manifest fields" })}
+                  <summary className={sharedStyles.fieldsSummary}>
+                    <span>
+                      {translate({ id: "railyard.mods.allFields", message: "All Manifest Fields" })}
+                    </span>
+                    <span className={sharedStyles.fieldsSummaryArrow} aria-hidden="true">
+                      ▾
+                    </span>
                   </summary>
                   <dl>
                     {item.fields.map((field) => (

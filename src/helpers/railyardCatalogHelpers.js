@@ -226,13 +226,60 @@ export function PaginationNav({
 
 export function DownloadInAppModal({ styles, selectedItem, nativeDownload, onClose }) {
   const [downloadsOpen, setDownloadsOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
   const downloadGroupRef = useRef(null);
+  const closeTimerRef = useRef(null);
+
+  function handleClose() {
+    setIsClosing(true);
+  }
+
+  useEffect(() => {
+    if (!selectedItem) return undefined;
+
+    document.body.classList.add(styles.modalOpenBodyLock);
+    return () => {
+      document.body.classList.remove(styles.modalOpenBodyLock);
+    };
+  }, [selectedItem, styles.modalOpenBodyLock]);
 
   useEffect(() => {
     if (!selectedItem) {
       setDownloadsOpen(false);
+      setIsClosing(false);
+      return;
     }
+
+    setIsClosing(false);
   }, [selectedItem]);
+
+  useEffect(
+    () => () => {
+      if (closeTimerRef.current) {
+        clearTimeout(closeTimerRef.current);
+      }
+      document.body.classList.remove(styles.modalOpenBodyLock);
+    },
+    [styles.modalOpenBodyLock],
+  );
+
+  useEffect(() => {
+    if (!isClosing) return undefined;
+
+    closeTimerRef.current = window.setTimeout(() => {
+      onClose();
+      setDownloadsOpen(false);
+      setIsClosing(false);
+      closeTimerRef.current = null;
+    }, 220);
+
+    return () => {
+      if (closeTimerRef.current) {
+        clearTimeout(closeTimerRef.current);
+        closeTimerRef.current = null;
+      }
+    };
+  }, [isClosing, onClose]);
 
   useEffect(() => {
     function handleDocumentPointerDown(event) {
@@ -250,9 +297,13 @@ export function DownloadInAppModal({ styles, selectedItem, nativeDownload, onClo
   if (!selectedItem) return null;
 
   return (
-    <div className={styles.modalOverlay} role="presentation" onClick={onClose}>
+    <div
+      className={`${styles.modalOverlay} ${isClosing ? styles.modalOverlayClosing : styles.modalOverlayOpen}`}
+      role="presentation"
+      onClick={handleClose}
+    >
       <section
-        className={styles.modalCard}
+        className={`${styles.modalCard} ${isClosing ? styles.modalCardClosing : styles.modalCardOpen}`}
         role="dialog"
         aria-modal="true"
         aria-labelledby="railyard-modal-title"
@@ -262,7 +313,7 @@ export function DownloadInAppModal({ styles, selectedItem, nativeDownload, onClo
           type="button"
           className={styles.modalCloseIconButton}
           aria-label={translate({ id: "railyard.shared.modal.close", message: "Close" })}
-          onClick={onClose}
+          onClick={handleClose}
         >
           ×
         </button>
@@ -332,7 +383,7 @@ export function DownloadInAppModal({ styles, selectedItem, nativeDownload, onClo
             </button>
 
             <div
-              className={`${styles.modalDropdownMenu} ${downloadsOpen ? styles.modalDropdownMenuOpen : ""}`}
+              className={`${styles.modalDropdownMenu} ${downloadsOpen ? styles.modalDropdownMenuOpen : ""} ${isClosing ? styles.modalDropdownMenuClosing : ""}`}
             >
               {ALL_DOWNLOADS.map((download) => (
                 <Link
