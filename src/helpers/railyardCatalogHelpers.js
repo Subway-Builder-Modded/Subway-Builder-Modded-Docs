@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "@docusaurus/Link";
 import { translate } from "@docusaurus/Translate";
+import { ALL_DOWNLOADS } from "./railyardHelpers";
 
 export function getSortValue(sortBy, sortConfig) {
   const [column, direction] = sortBy.split("-");
@@ -89,6 +90,14 @@ export function PaginationNav({
 }
 
 export function DownloadInAppModal({ styles, selectedItem, nativeDownload, onClose }) {
+  const [downloadsOpen, setDownloadsOpen] = useState(false);
+
+  useEffect(() => {
+    if (!selectedItem) {
+      setDownloadsOpen(false);
+    }
+  }, [selectedItem]);
+
   if (!selectedItem) return null;
 
   return (
@@ -126,10 +135,16 @@ export function DownloadInAppModal({ styles, selectedItem, nativeDownload, onClo
         </p>
 
         <div className={styles.modalActions}>
-          <button type="button" className={styles.modalPrimaryButton}>
+          <button
+            type="button"
+            className={`${styles.modalActionButton} ${styles.modalActionPrimary}`}
+          >
             {translate({ id: "railyard.shared.modal.comingSoon", message: "Coming Soon" })}
           </button>
-          <Link to={nativeDownload.link} className={styles.modalPrimaryButton}>
+          <Link
+            to={nativeDownload.link}
+            className={`${styles.modalActionButton} ${styles.modalActionDownload}`}
+          >
             {translate(
               {
                 id: "railyard.shared.modal.downloadForPlatform",
@@ -140,9 +155,43 @@ export function DownloadInAppModal({ styles, selectedItem, nativeDownload, onClo
           </Link>
         </div>
 
-        <Link to="/railyard#all-downloads" className={styles.modalMoreDownloadsLink}>
-          {translate({ id: "railyard.shared.modal.moreDownloads", message: "More Downloads" })}
-        </Link>
+        <div className={styles.modalDropdownWrap}>
+          <button
+            type="button"
+            className={styles.modalDropdownToggle}
+            aria-expanded={downloadsOpen}
+            onClick={() => setDownloadsOpen((value) => !value)}
+          >
+            <span>
+              {translate({ id: "railyard.shared.modal.moreDownloads", message: "More Downloads" })}
+            </span>
+            <svg
+              width="12"
+              height="7"
+              viewBox="0 0 14 8"
+              fill="none"
+              className={downloadsOpen ? styles.rotated : ""}
+            >
+              <path
+                d="M1 1L7 7L13 1"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </button>
+
+          {downloadsOpen && (
+            <div className={styles.modalDropdownMenu}>
+              {ALL_DOWNLOADS.map((download) => (
+                <Link key={download.label} to={download.link} className={styles.modalDropdownItem}>
+                  {download.label}
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
       </section>
     </div>
   );

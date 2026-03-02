@@ -176,6 +176,7 @@ function buildGithubImageCandidates(url) {
   const normalized = url.replace("/refs/heads/", "/").replace("?raw=true", "");
   const candidates = [encodeURI(normalized)];
 
+  // Matches GitHub blob/raw URLs and captures owner, repo, branch, and asset path.
   const githubMatch = normalized.match(
     /^https:\/\/github\.com\/([^/]+)\/([^/]+)\/(?:blob|raw)\/([^/]+)\/(.+)$/,
   );
@@ -187,6 +188,7 @@ function buildGithubImageCandidates(url) {
     candidates.push(`https://cdn.jsdelivr.net/gh/${owner}/${repo}@${branch}/${encodeURI(rawPath)}`);
   }
 
+  // Matches raw.githubusercontent.com URLs and captures owner, repo, branch, and asset path.
   const rawMatch = normalized.match(
     /^https:\/\/raw\.githubusercontent\.com\/([^/]+)\/([^/]+)\/([^/]+)\/(.+)$/,
   );
@@ -209,10 +211,22 @@ export function normalizeImageList(manifest, type, id) {
       if (value.startsWith("http")) return buildGithubImageCandidates(value);
       const cleaned = value
         .replace(/^\.\//, "")
-        .replace(new RegExp(`^${type}/${id}/gallery/`), "")
-        .replace(new RegExp(`^${id}/gallery/`), "")
+        .replace(
+          // Removes a leading full registry gallery prefix (e.g., maps/my-id/gallery/).
+          new RegExp(`^${type}/${id}/gallery/`),
+          "",
+        )
+        .replace(
+          // Removes a leading item-relative gallery prefix (e.g., my-id/gallery/).
+          new RegExp(`^${id}/gallery/`),
+          "",
+        )
         .replace(/^gallery\//, "")
-        .replace(new RegExp(`^${type}/`), "")
+        .replace(
+          // Removes a leading content type segment if already present (maps/ or mods/).
+          new RegExp(`^${type}/`),
+          "",
+        )
         .replace(/^\//, "");
       const relative = `${type}/${id}/gallery/${cleaned}`;
       return [
