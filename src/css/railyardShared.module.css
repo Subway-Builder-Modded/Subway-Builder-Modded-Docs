@@ -119,6 +119,7 @@
 
 .select {
     appearance: none;
+    cursor: pointer;
     border: 1px solid color-mix(in srgb, var(--ifm-border-color) 50%, #10b981 50%);
     border-radius: 12px;
     padding: 0.5rem 2.2rem 0.5rem 0.7rem;
@@ -139,12 +140,13 @@
             0 0;
     background-size: 6px 6px, 6px 6px, 100% 100%;
     background-repeat: no-repeat;
-    box-shadow: 0 2px 12px rgba(16, 185, 129, 0.08);
-    transition: transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+    box-shadow: 0 2px 12px rgba(16, 185, 129, 0.08), inset 0 0 0 1px rgba(16, 185, 129, 0.05);
+    transition: transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease, background-color 0.16s ease;
 }
 
 .select:hover {
     transform: translateY(-1px);
+    border-color: color-mix(in srgb, #10b981 75%, var(--ifm-border-color) 25%);
     box-shadow: 0 4px 16px rgba(16, 185, 129, 0.13);
 }
 
@@ -506,11 +508,19 @@
 .pagination button {
     border: 1px solid color-mix(in srgb, var(--ifm-border-color) 60%, #10b981 40%);
     border-radius: 999px;
-    padding: 0.3rem 0.78rem;
+    padding: 0.35rem 0.9rem;
     font-size: 0.76rem;
     font-weight: 800;
     letter-spacing: 0.02em;
-    background: color-mix(in srgb, var(--ifm-background-color) 90%, #10b981 10%);
+    color: var(--ifm-font-color-base);
+    cursor: pointer;
+    background: linear-gradient(
+            160deg,
+            color-mix(in srgb, var(--ifm-background-color) 86%, #10b981 14%),
+            color-mix(in srgb, var(--ifm-background-color) 94%, #0039a6 6%)
+    );
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.12);
+    transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
 }
 
 .pagination button:hover:not(:disabled),
@@ -521,6 +531,8 @@
 
 .pagination button:disabled {
     opacity: 0.6;
+    cursor: not-allowed;
+    box-shadow: none;
 }
 
 .pagination span {

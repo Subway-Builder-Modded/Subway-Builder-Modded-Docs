@@ -426,7 +426,7 @@ export default function Railyard() {
         <section className={styles.spacerSection} aria-hidden="true" />
         <div className={styles.sectionSeparator} />
 
-        <section className={styles.solidSection} id="all-downloads">
+        <section className={`${styles.solidSection} ${styles.allDownloadsSection}`} id="all-downloads">
           <div className={styles.container}>
             <div className={styles.sectionHeader}>
               <h2 className={styles.sectionTitle}>

@@ -11,6 +11,8 @@ export const PAGE_SIZES = [12, 24, 48];
 
 export const CARD_POPUP_ENABLED = true;
 
+const DEFAULT_FETCH_TIMEOUT_MS = 9000;
+
 export const ALL_DOWNLOADS = [
   {
     os: "Windows",
@@ -135,49 +137,53 @@ export function formatDownloadCount(value) {
 }
 
 async function getGitHubVersions(repo) {
-  const response = await fetch(`https://api.github.com/repos/${repo}/releases`, {
+  const normalizedRepo = normalizeGitHubRepo(repo);
+  if (!normalizedRepo) return [];
+
+  const releases = await fetchJSON(`https://api.github.com/repos/${normalizedRepo}/releases`, {
     headers: {
       Accept: "application/vnd.github+json",
     },
   });
 
-  if (!response.ok) return [];
-
-  const releases = await response.json();
   if (!Array.isArray(releases)) return [];
 
   return releases.map((release) => ({
-    downloads: Array.isArray(release.assets)
-      ? release.assets.reduce((sum, asset) => sum + (asset.download_count || 0), 0)
-      : 0,
+    downloads: extractReleaseDownloadCount(release),
   }));
 }
 
 async function getCustomVersions(url) {
-  const response = await fetch(url);
-  if (!response.ok) return [];
+  const data = await fetchJSON(url);
+  const versions =
+    (Array.isArray(data?.versions) && data.versions) ||
+    (Array.isArray(data?.releases) && data.releases) ||
+    (Array.isArray(data) && data) ||
+    [];
 
-  const data = await response.json();
-  if (!Array.isArray(data?.versions)) return [];
-
-  return data.versions.map((version) => ({ downloads: Number(version.downloads) || 0 }));
+  return versions.map((version) => ({ downloads: extractDownloadValue(version) }));
 }
 
 export async function fetchManifestDownloadCount(manifest) {
   if (!manifest || typeof manifest !== "object") return 0;
 
-  const update = manifest.update || manifest.updater || manifest.releaseSource || {};
-  const updateType = update.type || update.updateType || update.provider;
+  const update =
+    manifest.update ||
+    manifest.updater ||
+    manifest.releaseSource ||
+    manifest.updateSource ||
+    {};
+  const updateType = String(update.type || update.updateType || update.provider || "").toLowerCase();
 
   try {
-    if (updateType === "github") {
-      const repo = update.repo || update.repository || update.github || update.source;
+    if (updateType.includes("github") || update.repo || update.repository || update.github) {
+      const repo = update.repo || update.repository || update.github || update.source || update.url;
       if (!repo || typeof repo !== "string") return 0;
       const versions = await getGitHubVersions(repo);
       return versions.reduce((sum, version) => sum + (version.downloads || 0), 0);
     }
 
-    if (updateType === "custom") {
+    if (updateType.includes("custom") || updateType.includes("json") || update.url) {
       const updateURL = update.url || update.updateUrl || update.source;
       if (!updateURL || typeof updateURL !== "string") return 0;
       const versions = await getCustomVersions(updateURL);
@@ -290,14 +296,92 @@ export function buildManifestCommitUrl(type, id) {
 }
 
 export async function fetchUpdatedAt(type, id) {
-  const response = await fetch(buildManifestCommitUrl(type, id));
-  if (!response.ok) {
-    return null;
-  }
+  const encodedPath = encodeURIComponent(`${type}/${id}/manifest.json`);
+  const commits =
+    (await fetchJSON(
+      `https://api.github.com/repos/Subway-Builder-Modded/The-Railyard/commits?path=${encodedPath}&sha=main&per_page=1`,
+      {
+        headers: { Accept: "application/vnd.github+json" },
+      },
+    )) ||
+    (await fetchJSON(
+      `https://api.github.com/repos/Subway-Builder-Modded/The-Railyard/commits?path=${encodedPath}&sha=refs/heads/main&per_page=1`,
+      {
+        headers: { Accept: "application/vnd.github+json" },
+      },
+    ));
 
-  const commits = await response.json();
   const latest = Array.isArray(commits) ? commits[0] : null;
   return latest?.commit?.committer?.date || latest?.commit?.author?.date || null;
+}
+
+function normalizeGitHubRepo(value) {
+  if (typeof value !== "string") return null;
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+
+  const directMatch = trimmed.match(/^([\w.-]+)\/([\w.-]+)$/);
+  if (directMatch) {
+    return `${directMatch[1]}/${directMatch[2]}`;
+  }
+
+  const urlMatch = trimmed.match(/github\.com\/([\w.-]+)\/([\w.-]+)/i);
+  if (urlMatch) {
+    return `${urlMatch[1]}/${urlMatch[2].replace(/\.git$/i, "")}`;
+  }
+
+  return null;
+}
+
+function extractDownloadValue(version) {
+  if (!version || typeof version !== "object") {
+    return Number(version) || 0;
+  }
+
+  if (Array.isArray(version.assets)) {
+    const assetTotal = version.assets.reduce(
+      (sum, asset) => sum + (Number(asset?.download_count ?? asset?.downloads) || 0),
+      0,
+    );
+    if (assetTotal > 0) return assetTotal;
+  }
+
+  const direct =
+    version.downloads ??
+    version.downloadCount ??
+    version.download_count ??
+    version.totalDownloads ??
+    version.count;
+
+  return Number(direct) || 0;
+}
+
+function extractReleaseDownloadCount(release) {
+  if (!release || typeof release !== "object") return 0;
+  return extractDownloadValue(release);
+}
+
+async function fetchJSON(url, options = {}, timeoutMs = DEFAULT_FETCH_TIMEOUT_MS) {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    const response = await fetch(url, {
+      cache: "no-store",
+      ...options,
+      signal: controller.signal,
+      headers: {
+        ...(options.headers || {}),
+      },
+    });
+
+    if (!response.ok) return null;
+    return await response.json();
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timeoutId);
+  }
 }
 
 function buildGithubImageCandidates(url) {
