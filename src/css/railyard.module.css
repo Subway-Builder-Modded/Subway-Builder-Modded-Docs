@@ -478,16 +478,14 @@
     margin-bottom: 1.9rem;
 }
 
-.osTabs,
-.archChips {
+.osTabs {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
     margin-bottom: 0.75rem;
 }
 
-.osTab,
-.archChip {
+.osTab {
     border: 1px solid var(--ifm-border-color);
     border-radius: 999px;
     background: transparent;
@@ -498,19 +496,33 @@
     transition: all 0.18s ease;
 }
 
-.osTab:hover,
-.archChip:hover {
+.osTab:hover {
     border-color: var(--railyard-primary);
 }
 
-.osTabActive,
-.archChipActive {
+.osTabActive {
     border-color: var(--railyard-primary);
     background: rgba(var(--railyard-glow), 0.14);
 }
 
-.verticalDownloadList {
-    margin-top: 0.25rem;
+
+.downloadsSplitCard {
+    display: grid;
+    grid-template-columns: minmax(170px, 240px) 1fr;
+    gap: 0.95rem;
+    align-items: start;
+}
+
+.downloadsLeftColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.downloadsRightColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 0.62rem;
 }
 
 .longDownloadButton {
@@ -609,6 +621,17 @@
     }
 
     .sectionHeader {
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 820px) {
+    .downloadsSplitCard {
+        grid-template-columns: 1fr;
+    }
+
+    .downloadsLeftColumn {
+        flex-direction: row;
         flex-wrap: wrap;
     }
 }

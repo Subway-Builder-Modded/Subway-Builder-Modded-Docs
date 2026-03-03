@@ -67,6 +67,7 @@
     border: 1px solid color-mix(in srgb, var(--ifm-border-color) 55%, #10b981 45%);
     background: color-mix(in srgb, var(--ifm-background-color) 68%, #00933c 32%);
     border-radius: 999px;
+    color: var(--ifm-font-color-base);
     padding: 0.34rem 0.85rem;
     font-size: 0.84rem;
     font-weight: 800;
@@ -113,6 +114,7 @@
     gap: 0.35rem;
     font-size: 0.86rem;
     font-weight: 700;
+    color: var(--ifm-description-color);
 }
 
 .select {
@@ -249,8 +251,10 @@
 .spotlightIcon {
     width: 1.1rem;
     height: 1.1rem;
-    color: #6ee7b7;
-    filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.95)) drop-shadow(0 0 14px rgba(167, 243, 208, 0.65));
+    display: inline-block;
+    background-color: var(--ifm-description-color);
+    -webkit-mask: url("/assets/spotlight.svg") center / contain no-repeat;
+    mask: url("/assets/spotlight.svg") center / contain no-repeat;
     transform: translateY(1px);
 }
 
@@ -288,6 +292,26 @@
     margin: 0.25rem 0 0;
     font-size: 0.75rem;
     color: var(--ifm-description-color);
+}
+
+.downloadsText {
+    margin: 0.3rem 0 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.32rem;
+    font-size: 0.8rem;
+    color: var(--ifm-description-color);
+    font-weight: 700;
+}
+
+.downloadsIcon {
+    width: 0.9rem;
+    height: 0.9rem;
+    display: inline-block;
+    background-color: var(--ifm-description-color);
+    -webkit-mask: url("/assets/download-count.svg") center / contain no-repeat;
+    mask: url("/assets/download-count.svg") center / contain no-repeat;
+    opacity: 0.92;
 }
 
 .carousel {
@@ -459,7 +483,7 @@
 
 .pagination {
     margin: 0.8rem auto;
-    padding: 0.38rem;
+    padding: 0.44rem;
     width: fit-content;
     display: flex;
     justify-content: center;
@@ -523,7 +547,6 @@
 
 .modalOpenBodyLock {
     overflow: hidden !important;
-    touch-action: none;
 }
 
 .modalOverlay {

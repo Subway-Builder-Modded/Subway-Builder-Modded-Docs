@@ -12,6 +12,8 @@ import {
   getFirstValue,
   getTitle,
   getManifestUpdatedAt,
+  fetchManifestDownloadCount,
+  formatDownloadCount,
   normalizeImageList,
   normalizeTags,
   PAGE_SIZES,
@@ -35,6 +37,7 @@ const SOURCE = {
 };
 
 const SORT_CONFIG = {
+  downloads: { value: (item) => item.downloads, defaultDirection: "desc" },
   name: { value: (item) => item.title, defaultDirection: "asc" },
   updated: { value: (item) => item.updatedAtDate, defaultDirection: "desc" },
   id: { value: (item) => item.id, defaultDirection: "asc" },
@@ -50,7 +53,7 @@ export default function RailyardModsPage() {
   const [items, setItems] = useState([]);
   const [query, setQuery] = useState("");
   const [selectedTags, setSelectedTags] = useState([]);
-  const [sortBy, setSortBy] = useState("updated-desc");
+  const [sortBy, setSortBy] = useState("downloads-desc");
   const [pageSize, setPageSize] = useState(12);
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
@@ -113,6 +116,7 @@ export default function RailyardModsPage() {
                 updatedAtDate,
                 images: normalizeImageList(manifest, SOURCE.type, id),
                 fields: flattenRecord(manifest),
+                downloads: await fetchManifestDownloadCount(manifest),
               };
             } catch {
               return null;
@@ -294,6 +298,12 @@ export default function RailyardModsPage() {
                 <option value="updated-asc">
                   {translate({ id: "railyard.mods.sort.updatedAsc", message: "Oldest Updated" })}
                 </option>
+                <option value="downloads-desc">
+                  {translate({ id: "railyard.mods.sort.downloadsDesc", message: "Downloads (high → low)" })}
+                </option>
+                <option value="downloads-asc">
+                  {translate({ id: "railyard.mods.sort.downloadsAsc", message: "Downloads (low → high)" })}
+                </option>
                 <option value="name-asc">
                   {translate({ id: "railyard.mods.sort.nameAsc", message: "Name (A → Z)" })}
                 </option>
@@ -374,9 +384,9 @@ export default function RailyardModsPage() {
                 <header className={sharedStyles.cardHeader}>
                   <div className={sharedStyles.cardTitleWrap}>
                     {isSpotlighted ? (
-                      <img
-                        src="/assets/spotlight.svg"
-                        alt={translate({ id: "railyard.mods.spotlighted", message: "Spotlighted" })}
+                      <span
+                        role="img"
+                        aria-label={translate({ id: "railyard.mods.spotlighted", message: "Spotlighted" })}
                         className={sharedStyles.spotlightIcon}
                       />
                     ) : null}
@@ -398,6 +408,10 @@ export default function RailyardModsPage() {
                   {translate({ id: "railyard.mods.updated", message: "Updated" })}:{" "}
                   {formatUpdatedDate(item.updatedAt) ||
                     translate({ id: "railyard.mods.updatedUnknown", message: "Unknown" })}
+                </p>
+                <p className={sharedStyles.downloadsText}>
+                  <span aria-hidden="true" className={sharedStyles.downloadsIcon} />
+                  <span>{formatDownloadCount(item.downloads)}</span>
                 </p>
 
                 <div className={sharedStyles.carousel}>

@@ -98,19 +98,7 @@ function renderMarkdownBlocks(markdown) {
 }
 
 function getCompactPlatformLabel(download) {
-  const osAbbreviations = {
-    Windows: "Win",
-    macOS: "macOS",
-    Linux: "Linux",
-  };
-  const archAbbreviations = {
-    x64: "x64",
-    arm64: "ARM64",
-  };
-
-  const osShort = osAbbreviations[download.os] || download.os;
-  const archShort = archAbbreviations[download.arch] || download.arch;
-  return `${osShort} ${archShort}`;
+  return download.label || `${download.os} (${download.distribution || download.arch || "build"})`;
 }
 
 export function ExpandableMarkdown({ text, styles, readMoreId }) {
@@ -239,31 +227,20 @@ export function DownloadInAppModal({ styles, selectedItem, nativeDownload, onClo
 
     const body = document.body;
     const html = document.documentElement;
-    const scrollY = window.scrollY;
     const previousBodyOverflow = body.style.overflow;
     const previousBodyTouchAction = body.style.touchAction;
-    const previousBodyPosition = body.style.position;
-    const previousBodyTop = body.style.top;
-    const previousBodyWidth = body.style.width;
     const previousHtmlOverflow = html.style.overflow;
 
     body.classList.add(styles.modalOpenBodyLock);
     body.style.overflow = "hidden";
     body.style.touchAction = "none";
-    body.style.position = "fixed";
-    body.style.top = `-${scrollY}px`;
-    body.style.width = "100%";
     html.style.overflow = "hidden";
 
     return () => {
       body.classList.remove(styles.modalOpenBodyLock);
       body.style.overflow = previousBodyOverflow;
       body.style.touchAction = previousBodyTouchAction;
-      body.style.position = previousBodyPosition;
-      body.style.top = previousBodyTop;
-      body.style.width = previousBodyWidth;
       html.style.overflow = previousHtmlOverflow;
-      window.scrollTo({ top: scrollY });
     };
   }, [selectedItem, styles.modalOpenBodyLock]);
 

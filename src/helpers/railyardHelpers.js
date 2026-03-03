@@ -14,53 +14,80 @@ export const CARD_POPUP_ENABLED = true;
 export const ALL_DOWNLOADS = [
   {
     os: "Windows",
+    distribution: "x64",
     arch: "x64",
     link: "https://geek.co.il/2023/02/09/imported-rant-why-i-hate-macos",
-    label: "Windows x64",
+    label: "Windows (x64)",
     type: ".zip",
     size: "0 MB",
   },
   {
     os: "Windows",
+    distribution: "arm64",
     arch: "arm64",
     link: "https://geek.co.il/2023/02/09/imported-rant-why-i-hate-macos",
-    label: "Windows ARM64",
+    label: "Windows (arm64)",
     type: ".zip",
     size: "0 MB",
   },
   {
     os: "macOS",
+    distribution: "Apple Silicon",
     arch: "arm64",
     link: "https://geek.co.il/2023/02/09/imported-rant-why-i-hate-macos",
-    label: "macOS Apple Silicon",
+    label: "macOS (Apple Silicon)",
     type: ".dmg",
     size: "0 MB",
   },
   {
     os: "macOS",
+    distribution: "Intel",
     arch: "x64",
     link: "https://geek.co.il/2023/02/09/imported-rant-why-i-hate-macos",
-    label: "macOS Intel",
+    label: "macOS (Intel)",
     type: ".dmg",
     size: "0 MB",
   },
   {
     os: "Linux",
+    distribution: "x64",
     arch: "x64",
     link: "https://geek.co.il/2023/02/09/imported-rant-why-i-hate-macos",
-    label: "Linux x64",
+    label: "Linux (x64)",
     type: ".AppImage",
     size: "0 MB",
   },
   {
     os: "Linux",
+    distribution: "arm64",
     arch: "arm64",
     link: "https://geek.co.il/2023/02/09/imported-rant-why-i-hate-macos",
-    label: "Linux ARM64",
+    label: "Linux (arm64)",
     type: ".AppImage",
     size: "0 MB",
   },
 ];
+
+export function getDownloadCatalog() {
+  const byOS = new Map();
+
+  ALL_DOWNLOADS.forEach((entry) => {
+    if (!byOS.has(entry.os)) {
+      byOS.set(entry.os, []);
+    }
+    byOS.get(entry.os).push(entry);
+  });
+
+  return Array.from(byOS.entries()).map(([os, downloads]) => ({ os, downloads }));
+}
+
+export function getOSOptions() {
+  return getDownloadCatalog().map((group) => group.os);
+}
+
+export function getDownloadsForOS(os) {
+  return ALL_DOWNLOADS.filter((entry) => entry.os === os);
+}
 
 export async function detectNativeDownload() {
   if (typeof navigator === "undefined") {
@@ -81,7 +108,86 @@ export async function detectNativeDownload() {
     arch = "arm64";
   }
 
-  return ALL_DOWNLOADS.find((entry) => entry.os === os && entry.arch === arch) || ALL_DOWNLOADS[0];
+  const exactMatch = ALL_DOWNLOADS.find((entry) => entry.os === os && entry.arch === arch);
+  if (exactMatch) return exactMatch;
+
+  return ALL_DOWNLOADS.find((entry) => entry.os === os) || ALL_DOWNLOADS[0];
+}
+
+export function formatDownloadCount(value) {
+  const count = Number(value);
+  if (!Number.isFinite(count) || count <= 0) return "0";
+
+  const units = ["", "k", "m", "b", "t", "q"];
+  let unitIndex = 0;
+  let scaled = count;
+
+  while (scaled >= 1000 && unitIndex < units.length - 1) {
+    scaled /= 1000;
+    unitIndex += 1;
+  }
+
+  if (unitIndex === 0) {
+    return scaled.toLocaleString();
+  }
+
+  return `${scaled.toFixed(1)}${units[unitIndex]}`;
+}
+
+async function getGitHubVersions(repo) {
+  const response = await fetch(`https://api.github.com/repos/${repo}/releases`, {
+    headers: {
+      Accept: "application/vnd.github+json",
+    },
+  });
+
+  if (!response.ok) return [];
+
+  const releases = await response.json();
+  if (!Array.isArray(releases)) return [];
+
+  return releases.map((release) => ({
+    downloads: Array.isArray(release.assets)
+      ? release.assets.reduce((sum, asset) => sum + (asset.download_count || 0), 0)
+      : 0,
+  }));
+}
+
+async function getCustomVersions(url) {
+  const response = await fetch(url);
+  if (!response.ok) return [];
+
+  const data = await response.json();
+  if (!Array.isArray(data?.versions)) return [];
+
+  return data.versions.map((version) => ({ downloads: Number(version.downloads) || 0 }));
+}
+
+export async function fetchManifestDownloadCount(manifest) {
+  if (!manifest || typeof manifest !== "object") return 0;
+
+  const update = manifest.update || manifest.updater || manifest.releaseSource || {};
+  const updateType = update.type || update.updateType || update.provider;
+
+  try {
+    if (updateType === "github") {
+      const repo = update.repo || update.repository || update.github || update.source;
+      if (!repo || typeof repo !== "string") return 0;
+      const versions = await getGitHubVersions(repo);
+      return versions.reduce((sum, version) => sum + (version.downloads || 0), 0);
+    }
+
+    if (updateType === "custom") {
+      const updateURL = update.url || update.updateUrl || update.source;
+      if (!updateURL || typeof updateURL !== "string") return 0;
+      const versions = await getCustomVersions(updateURL);
+      return versions.reduce((sum, version) => sum + (version.downloads || 0), 0);
+    }
+  } catch {
+    return 0;
+  }
+
+  return 0;
 }
 
 export function getFirstValue(record, key) {
@@ -260,17 +366,17 @@ export function normalizeImageList(manifest, type, id) {
     }
 
     if (typeof value === "object") {
-      const nested = value.file || value.src || value.path || value.url;
-      return toUrl(nested);
+      return toUrl(value.src || value.url || value.path || value.file || value.image);
     }
 
     return [];
   };
 
   if (Array.isArray(imageCandidates)) {
-    return imageCandidates.map(toUrl).filter((candidateList) => candidateList.length > 0);
+    return imageCandidates
+      .map((entry) => toUrl(entry))
+      .filter((group) => group.length > 0);
   }
 
-  const singleUrl = toUrl(imageCandidates);
-  return singleUrl.length > 0 ? [singleUrl] : [];
+  return [toUrl(imageCandidates)].filter((group) => group.length > 0);
 }
