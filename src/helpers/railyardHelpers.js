@@ -9,9 +9,9 @@ const fieldPathLookup = {
 
 export const PAGE_SIZES = [12, 24, 48];
 
-export const CARD_POPUP_ENABLED = true;
+export const CARD_POPUP_ENABLED = false;
 
-const DEFAULT_FETCH_TIMEOUT_MS = 9000;
+const DEFAULT_FETCH_TIMEOUT_MS = 15000;
 
 export const ALL_DOWNLOADS = [
   {
