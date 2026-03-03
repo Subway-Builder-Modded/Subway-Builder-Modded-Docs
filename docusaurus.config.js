@@ -152,27 +152,33 @@ module.exports = {
         {
           href: "https://github.com/Subway-Builder-Modded/Subway-Builder-Modded-Docs",
           position: "right",
+          className: "navbar-icon-item",
           html: `
-            <a class="navbar-icon-link" href="https://github.com/Subway-Builder-Modded/Subway-Builder-Modded-Docs">
+            <a class="navbar-icon-link" href="https://github.com/Subway-Builder-Modded/Subway-Builder-Modded-Docs" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
               <img src="/assets/github.svg" width="24" height="24" />
+              <span class="navbar-icon-link__label">GitHub</span>
             </a>
           `,
         },
         {
           href: "https://discord.gg/jrNQpbytUQ",
           position: "right",
+          className: "navbar-icon-item",
           html: `
-            <a class="navbar-icon-link" href="https://discord.gg/jrNQpbytUQ">
+            <a class="navbar-icon-link" href="https://discord.gg/jrNQpbytUQ" target="_blank" rel="noopener noreferrer" aria-label="Discord">
               <img src="/assets/discord.svg" width="24" height="24" />
+              <span class="navbar-icon-link__label">Discord</span>
             </a>
           `,
         },
         {
           href: "https://subwaybuilder.com",
           position: "right",
+          className: "navbar-icon-item",
           html: `
-            <a class="navbar-icon-link" href="https://subwaybuilder.com">
+            <a class="navbar-icon-link" href="https://subwaybuilder.com" target="_blank" rel="noopener noreferrer" aria-label="Subway Builder">
               <img src="/assets/subway-builder.svg" width="20" height="20" />
+              <span class="navbar-icon-link__label">Subway Builder</span>
             </a>
           `,
         },
@@ -216,7 +222,7 @@ module.exports = {
           items: [
             {
               html: `
-                <a href="https://discord.gg/jrNQpbytUQ" class="footer-links" style="display: inline-flex; align-items: center; gap: 4px;">
+                <a href="https://discord.gg/jrNQpbytUQ" target="_blank" rel="noopener noreferrer" class="footer-links" style="display: inline-flex; align-items: center; gap: 4px;">
                   <img src="/assets/discord.svg" width="14" height="14" style="vertical-align: middle; margin-right: 4px;" />
                   Discord
                 </a>
@@ -224,7 +230,7 @@ module.exports = {
             },
             {
               html: `
-                <a href="https://github.com/Subway-Builder-Modded/Subway-Builder-Modded-Docs" class="footer-links" style="display: inline-flex; align-items: center; gap: 4px;">
+                <a href="https://github.com/Subway-Builder-Modded/Subway-Builder-Modded-Docs" target="_blank" rel="noopener noreferrer" class="footer-links" style="display: inline-flex; align-items: center; gap: 4px;">
                   <img src="/assets/github.svg" width="14" height="14" style="vertical-align: middle; margin-right: 4px;" />
                   GitHub
                 </a>
@@ -232,7 +238,7 @@ module.exports = {
             },
             {
               html: `
-                <a href="https://subwaybuilder.com" class="footer-links" style="display: inline-flex; align-items: center; gap: 4px;">
+                <a href="https://subwaybuilder.com" target="_blank" rel="noopener noreferrer" class="footer-links" style="display: inline-flex; align-items: center; gap: 4px;">
                   <img src="/assets/subway-builder.svg" width="12" height="12" style="vertical-align: middle; margin-right: 4px;" />
                   Subway Builder
                 </a>
