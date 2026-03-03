@@ -14,52 +14,28 @@ module.exports = {
   },
   i18n: {
     defaultLocale: "en",
-    locales: ["en"],
+    locales: ["en", "es-ES", "fr-FR", "it-IT", "de-DE"],
     localeConfigs: {
       en: {
         label: "English",
         htmlLang: "en-US",
       },
-      /*es: {
-        label: 'Español',
-        htmlLang: 'es-ES',
+      "es-ES": {
+        label: "Español",
+        htmlLang: "es-ES",
       },
-      ca: {
-        label: 'Català',
-        htmlLang: 'ca-ES',
+      "fr-FR": {
+        label: "Français",
+        htmlLang: "fr-FR",
       },
-      fr: {
-        label: 'Français',
-        htmlLang: 'fr-FR',
+      "it-IT": {
+        label: "Italiano",
+        htmlLang: "it-IT",
       },
-      de: {
-        label: 'Deutsch',
-        htmlLang: 'de-DE',
+      "de-DE": {
+        label: "Deutsch",
+        htmlLang: "de-DE",
       },
-      it: {
-        label: 'Italiano',
-        htmlLang: 'it-IT',
-      },
-      da: {
-        label: 'Dansk',
-        htmlLang: 'da-DK',
-      },
-      sv: {
-        label: 'Svenska',
-        htmlLang: 'sv-SE',
-      },
-      nb: {
-        label: 'Norsk bokmål',
-        htmlLang: 'nb-NO',
-      },
-      zh-CN: {
-        label: '中文 (简体)',
-        htmlLang: 'zh-CN',
-      },
-      zh-TW: {
-        label: '中文 (繁體)',
-        htmlLang: 'zh-TW',
-      },*/
     },
   },
   presets: [
@@ -79,16 +55,6 @@ module.exports = {
   ],
   plugins: [
     [
-      "@docusaurus/plugin-content-docs",
-      {
-        id: "modding-docs",
-        path: "modding-docs",
-        routeBasePath: "modding-docs",
-        sidebarPath: require.resolve("./sidebars/modding-docs.js"),
-        admonitions: true,
-      },
-    ],
-    [
       "@docusaurus/plugin-client-redirects",
       {
         redirects: [
@@ -97,9 +63,13 @@ module.exports = {
             to: "/wiki/home",
           },
           {
-            from: ["/modding-docs"],
-            to: "/modding-docs/template-mod/getting-started",
+            from: ["/modding-docs", "/modding-docs/template-mod/getting-started"],
+            to: "/wiki/template-mod/getting-started",
           },
+          {
+            from: ["/modding-docs/creating-maps/making-custom-maps"],
+            to: "/wiki/creating-custom-maps/making-custom-maps",
+          }
         ],
       },
     ],
@@ -135,9 +105,8 @@ module.exports = {
         {
           type: "doc",
           docId: "template-mod/getting-started",
-          docsPluginId: "modding-docs",
           position: "left",
-          label: "Modding Docs",
+          label: "Template Mod",
         },
         {
           to: "updates",
@@ -198,8 +167,8 @@ module.exports = {
               to: "/wiki/home",
             },
             {
-              label: "Modding Docs",
-              to: "/modding-docs/template-mod/getting-started",
+              label: "Template Mod",
+              to: "/wiki/template-mod/getting-started",
             },
             {
               label: "Updates",

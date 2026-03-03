@@ -1,0 +1,30 @@
+{
+  "version.label": {
+    "message": "Next",
+    "description": "The label for version current"
+  },
+  "sidebar.docs.category.Railyard": {
+    "message": "Railyard",
+    "description": "The label for category 'Railyard' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Developers": {
+    "message": "Developers",
+    "description": "The label for category 'Developers' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Creating Custom Maps": {
+    "message": "Creating Custom Maps",
+    "description": "The label for category 'Creating Custom Maps' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Template Mod": {
+    "message": "Template Mod",
+    "description": "The label for category 'Template Mod' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Contributing": {
+    "message": "Contributing",
+    "description": "The label for category 'Contributing' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Legacy": {
+    "message": "Legacy",
+    "description": "The label for category 'Legacy' in sidebar 'docs'"
+  }
+}

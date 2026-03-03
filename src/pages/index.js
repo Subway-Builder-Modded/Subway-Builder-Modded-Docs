@@ -11,13 +11,13 @@ const HOMEPAGE_ITEMS = [
     bullet: "#9A662F",
     title: translate({
       id: "homepage.directory.title",
-      message: "Map Directory",
+      message: "Wiki Overview",
     }),
     description: translate({
       id: "homepage.directory.description",
-      message: "Browse community-made maps from cities around the world.",
+      message: "Explore the new unified wiki and find the right docs section quickly.",
     }),
-    href: "/wiki/maps/map-directory",
+    href: "/wiki/home",
   },
   {
     id: "install",
@@ -32,7 +32,7 @@ const HOMEPAGE_ITEMS = [
       message:
         "Step-by-step guide to installing custom maps using Kronifer's Map Patcher.",
     }),
-    href: "/wiki/maps/map-installation-guide",
+    href: "/wiki/legacy/map-installation-guide",
   },
   {
     id: "create",
@@ -40,14 +40,14 @@ const HOMEPAGE_ITEMS = [
     bullet: "#0036A7",
     title: translate({
       id: "homepage.create.title",
-      message: "Making Custom Maps",
+      message: "Creating Custom Maps",
     }),
     description: translate({
       id: "homepage.create.description",
       message:
-        "The complete guide to creating, packaging, and distributing custom Subway Builder maps.",
+        "Step-by-step workflow for generating, packaging, and shipping custom maps.",
     }),
-    href: "/modding-docs/creating-maps/making-custom-maps",
+    href: "/wiki/creating-custom-maps/making-custom-maps",
   },
   {
     id: "updates",
@@ -70,13 +70,13 @@ const HOMEPAGE_ITEMS = [
     bullet: "#FF6312",
     title: translate({
       id: "homepage.modding.title",
-      message: "Modding Documentation",
+      message: "Template Mod Docs",
     }),
     description: translate({
       id: "homepage.modding.description",
       message: "Build your own mods using our Mod Template.",
     }),
-    href: "/modding-docs/template-mod/getting-started",
+    href: "/wiki/template-mod/getting-started",
   },
 ];
 

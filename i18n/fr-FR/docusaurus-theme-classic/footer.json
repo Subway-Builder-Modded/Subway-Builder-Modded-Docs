@@ -1,0 +1,30 @@
+{
+  "link.title.Pages": {
+    "message": "Pages",
+    "description": "The title of the footer links column with title=Pages in the footer"
+  },
+  "link.title.Other Links": {
+    "message": "Other Links",
+    "description": "The title of the footer links column with title=Other Links in the footer"
+  },
+  "link.item.label.Wiki": {
+    "message": "Wiki",
+    "description": "The label of footer link with label=Wiki linking to /wiki/home"
+  },
+  "link.item.label.Template Mod": {
+    "message": "Template Mod",
+    "description": "The label of footer link with label=Template Mod linking to /wiki/template-mod/getting-started"
+  },
+  "link.item.label.Updates": {
+    "message": "Updates",
+    "description": "The label of footer link with label=Updates linking to /updates"
+  },
+  "link.item.label.Credits": {
+    "message": "Credits",
+    "description": "The label of footer link with label=Credits linking to /credits"
+  },
+  "copyright": {
+    "message": "© Subway Builder Modded 2026. Not affiliated with Subway Builder or Redistricter, LLC. All content is community-created and shared under appropriate licenses.",
+    "description": "The footer copyright"
+  }
+}

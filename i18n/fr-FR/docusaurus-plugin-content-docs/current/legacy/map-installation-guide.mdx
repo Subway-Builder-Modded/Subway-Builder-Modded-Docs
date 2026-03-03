@@ -1,0 +1,69 @@
+---
+id: map-installation-guide
+titre : Guide d'installation de la carte
+---
+
+Le [Gestionnaire de cartes de Kronifer](https://github.com/Subway-Builder-Modded/subwaybuilder-patcher/releases) est
+le moyen le plus simple et le plus simple de télécharger et d'installer des villes personnalisées dans Subway Builder. Tous
+vous avez besoin d'un fichier ZIP fourni et du gestionnaire de cartes lui-même, et vous êtes prêt à partir.
+
+## Step 1 - Installing the Map Manager {#installing-the-map-manager}
+
+Téléchargez la dernière version de Map Manager sur
+https://github.com/Subway-Builder-Modded/subwaybuilder-patcher/releases. Pour télécharger, cliquez sur le
+version qui correspond à votre système d'exploitation.
+
+<img width="1000" alt="image" src="/images/map-manager-download.png" />
+
+:::note
+
+Pour Windows, vous voulez le fichier `.exe`. Pour Linux, vous voulez le fichier `.zip`. Pour MacOS, utilisez
+le fichier `arm64.dmg` si votre Mac possède une puce Apple Silicon (par exemple M1, M2, M3, etc.) et le `x64.dmg`
+fichier si votre Mac possède une puce Intel. En règle générale, les Mac plus récents que vers 2021 ont tendance à avoir
+Les puces Apple Silicon et les anciens modèles ont tendance à avoir des puces Intel, mais vérifiez bien qu'il y en a
+exceptions.
+
+:::
+
+:::warning
+
+Sous MacOS, le programme d'installation .dmg est susceptible d'être mis en quarantaine. Pour exécuter le programme d'installation, ouvrez un
+terminal dans le dossier dans lequel vous avez téléchargé le programme d'installation, puis exécutez
+`xattr -d com.apple.quarantine {INSTALLER_FILENAME}`. Par exemple, lors du téléchargement de la version 0.2.7
+pour un Mac ARM, vous exécuteriez
+`xattr -d com.apple.quarantine Subway.Builder.Map.Manager-0.2.7-arm64.dmg`.
+
+De plus, le dossier Bibliothèque contenant le dossier metro-maker4 peut être masqué par défaut. À
+résolvez ce problème, ouvrez le Finder et ouvrez le dossier Accueil, puis sélectionnez Affichage -> Afficher les options d'affichage -> Afficher
+Dossier de bibliothèque.
+
+:::
+
+Après cela, installez l’application comme vous le feriez normalement pour n’importe quelle autre application. Une fois l'installateur terminé,
+lancez l'application et exécutez le processus de configuration, en sélectionnant l'emplacement de l'exécutable de votre jeu et votre
+Dossier `metro-maker4`. À ce stade, vous pouvez supprimer en toute sécurité le ZIP, le programme d'installation et tout autre
+fichiers que vous avez éventuellement téléchargés.
+
+<img width="1200" alt="image" src="/images/map-manager-welcome.png" />
+
+## Step 2 - Adding the Map {#adding-the-map}
+
+Pour installer une carte, cliquez simplement sur le bouton `ADD A MAP` et importez le fichier ZIP que vous avez téléchargé
+contenant votre carte. Une fois cela terminé, vous devriez voir le nom de la carte, le créateur et le
+version apparaît à l'écran.
+
+<img width="1200" alt="image" src="/images/map-manager-home.png" />
+
+## Step 3 - Launching Subway Builder {#launching-subway-builder}
+
+Une fois que vous avez ajouté toutes vos cartes, vous pouvez lancer le jeu en utilisant `START GAME`. C'est ainsi que tu
+lancera le jeu à partir de maintenant. Dans le jeu, vos cartes apparaîtront sous l'onglet `CUSTOM`, et elles
+sont prêts à être joués !
+
+:::important
+
+En raison du fonctionnement actuel du jeu, vous devez lancer le jeu via le Map Manager
+chaque fois que vous souhaitez jouer à une carte personnalisée. Si vous ne lancez pas le jeu à l'aide du Map Manager,
+les bâtiments et l'eau n'apparaîtront pas dans le jeu.
+
+:::

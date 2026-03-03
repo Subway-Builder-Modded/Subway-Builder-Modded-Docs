@@ -1,0 +1,70 @@
+---
+id: contributing-documentation-content
+title: Contributing Documentation Content
+---
+
+:::info Prerequisites
+Before contributing docs content, make sure you have:
+
+- Node.js and a package manager installed.
+- A local clone of this repository.
+- Working knowledge of Git, branches, commits, and pull requests.
+- Ability to run and verify the site locally.
+:::
+
+This guide defines editorial standards for contributing or revising wiki content.
+
+## Writing Style Standards {#writing-style-standards}
+
+- Write in second person (`you`, `your`) for direct guidance.
+- Use concise, plain language.
+- Prefer active voice.
+- Keep instructions ordered and scannable.
+- Use title case for headings.
+
+## Grammar and Formatting Rules {#grammar-and-formatting-rules}
+
+- Check spelling and punctuation before submitting.
+- Use consistent capitalization for product/tool names.
+- Keep list formatting consistent throughout a page.
+- Use fenced code blocks with explicit language tags.
+- Use static heading IDs on headings for translation stability.
+
+## Markdown and MDX Features {#markdown-and-mdx-features}
+
+Use Docusaurus features intentionally:
+
+- **Admonitions** for notes, warnings, prerequisites, and tips.
+- **Tabs** for platform-specific instructions.
+- **Tables** for compact reference data.
+- **Inline code** for paths, commands, and identifiers.
+- **Callouts** to surface critical constraints.
+
+:::tip Consistency First
+If you introduce a pattern on one page (for example, a prerequisites block), use the same pattern in related pages.
+:::
+
+## Structure for Instructional Pages {#structure-for-instructional-pages}
+
+Recommended structure:
+
+1. Brief purpose statement.
+2. Prerequisites.
+3. Numbered step-by-step instructions.
+4. Verification or troubleshooting section.
+5. Links to related pages.
+
+## Link and Reference Rules {#link-and-reference-rules}
+
+- Prefer internal wiki links over raw URLs when a local page exists.
+- Use canonical routes under `/wiki/`.
+- Avoid linking to deprecated/legacy pages unless needed for compatibility.
+
+## Review Checklist {#review-checklist}
+
+Before opening a PR:
+
+- Confirm technical instructions are unchanged unless intentionally updated.
+- Validate links, paths, and commands.
+- Ensure tone and formatting match nearby docs.
+- Run a local build and check for warnings/errors.

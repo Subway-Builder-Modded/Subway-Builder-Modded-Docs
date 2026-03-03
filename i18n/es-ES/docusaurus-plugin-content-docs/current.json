@@ -1,0 +1,30 @@
+{
+  "version.label": {
+    "message": "Próximo",
+    "description": "The label for version current"
+  },
+  "sidebar.docs.category.Railyard": {
+    "message": "Ferrocarril",
+    "description": "The label for category 'Railyard' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Developers": {
+    "message": "Desarrolladores",
+    "description": "The label for category 'Developers' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Creating Custom Maps": {
+    "message": "Crear mapas personalizados",
+    "description": "The label for category 'Creating Custom Maps' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Template Mod": {
+    "message": "Modificación de plantilla",
+    "description": "The label for category 'Template Mod' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Contributing": {
+    "message": "Contribuyendo",
+    "description": "The label for category 'Contributing' in sidebar 'docs'"
+  },
+  "sidebar.docs.category.Legacy": {
+    "message": "Legado",
+    "description": "The label for category 'Legacy' in sidebar 'docs'"
+  }
+}

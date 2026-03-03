@@ -1,0 +1,26 @@
+{
+  "title": {
+    "message": "Subway Builder Modded",
+    "description": "The title in the navbar"
+  },
+  "logo.alt": {
+    "message": "Subway Builder Logo",
+    "description": "The alt text of navbar logo"
+  },
+  "item.label.Wiki": {
+    "message": "Wiki",
+    "description": "Navbar item with label Wiki"
+  },
+  "item.label.Template Mod": {
+    "message": "Template Mod",
+    "description": "Navbar item with label Template Mod"
+  },
+  "item.label.Updates": {
+    "message": "Updates",
+    "description": "Navbar item with label Updates"
+  },
+  "item.label.Credits": {
+    "message": "Credits",
+    "description": "Navbar item with label Credits"
+  }
+}
