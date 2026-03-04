@@ -3,6 +3,7 @@ import Layout from "@theme/Layout";
 import Link from "@docusaurus/Link";
 import Translate, { translate } from "@docusaurus/Translate";
 import styles from "../css/railyard.module.css";
+import { ALL_DOWNLOADS, detectNativeDownload, getDownloadCatalog } from "../helpers/railyardHelpers";
 
 const FEATURES = [
   {
@@ -110,57 +111,6 @@ const FEATURES = [
   },
 ];
 
-const ALL_DOWNLOADS = [
-  {
-    os: "Windows",
-    arch: "x64",
-    link: "https://geek.co.il/2023/02/09/imported-rant-why-i-hate-macos",
-    label: "Windows x64",
-    type: ".zip",
-    size: "0 MB",
-  },
-  {
-    os: "Windows",
-    arch: "arm64",
-    link: "https://geek.co.il/2023/02/09/imported-rant-why-i-hate-macos",
-    label: "Windows ARM64",
-    type: ".zip",
-    size: "0 MB",
-  },
-  {
-    os: "macOS",
-    arch: "arm64",
-    link: "https://geek.co.il/2023/02/09/imported-rant-why-i-hate-macos",
-    label: "macOS Apple Silicon",
-    type: ".dmg",
-    size: "0 MB",
-  },
-  {
-    os: "macOS",
-    arch: "x64",
-    link: "https://geek.co.il/2023/02/09/imported-rant-why-i-hate-macos",
-    label: "macOS Intel",
-    type: ".dmg",
-    size: "0 MB",
-  },
-  {
-    os: "Linux",
-    arch: "x64",
-    link: "https://geek.co.il/2023/02/09/imported-rant-why-i-hate-macos",
-    label: "Linux x64",
-    type: ".AppImage",
-    size: "0 MB",
-  },
-  {
-    os: "Linux",
-    arch: "arm64",
-    link: "https://geek.co.il/2023/02/09/imported-rant-why-i-hate-macos",
-    label: "Linux ARM64",
-    type: ".AppImage",
-    size: "0 MB",
-  },
-];
-
 const WORKFLOW_STOPS = [
   {
     id: "find",
@@ -198,8 +148,8 @@ export default function Railyard() {
   const [isDark, setIsDark] = useState(false);
   const [nativeOS, setNativeOS] = useState(ALL_DOWNLOADS[0]);
 
-  const [selectedOS, setSelectedOS] = useState("Windows");
-  const [selectedArch, setSelectedArch] = useState("x64");
+  const downloadCatalog = useMemo(() => getDownloadCatalog(), []);
+  const [selectedOS, setSelectedOS] = useState(downloadCatalog[0]?.os || "Windows");
 
   const [activeFeature, setActiveFeature] = useState(FEATURES[0].id);
   const [activeStop, setActiveStop] = useState(WORKFLOW_STOPS[0].id);
@@ -246,24 +196,10 @@ export default function Railyard() {
     observer.observe(document.documentElement, { attributes: true });
 
     const detect = async () => {
-      const ua = navigator.userAgent.toLowerCase();
-      let os = "Windows";
-      let arch = "x64";
-
-      if (ua.includes("mac")) os = "macOS";
-      else if (ua.includes("linux")) os = "Linux";
-
-      if (navigator.userAgentData?.getHighEntropyValues) {
-        const hints = await navigator.userAgentData.getHighEntropyValues(["architecture"]);
-        if (hints.architecture === "arm") arch = "arm64";
-      } else if (ua.includes("arm64") || ua.includes("aarch64")) {
-        arch = "arm64";
-      }
-
-      const match = ALL_DOWNLOADS.find((d) => d.os === os && d.arch === arch) || ALL_DOWNLOADS[0];
+      const match = await detectNativeDownload();
       setNativeOS(match);
       setSelectedOS(match.os);
-      setSelectedArch(match.arch);
+      
     };
 
     const fetchCount = async (url, key, setValue) => {
@@ -303,9 +239,9 @@ export default function Railyard() {
     };
   }, []);
 
-  const filteredDownloads = useMemo(
-    () => ALL_DOWNLOADS.filter((d) => d.os === selectedOS && d.arch === selectedArch),
-    [selectedOS, selectedArch],
+  const selectedDownloads = useMemo(
+    () => ALL_DOWNLOADS.filter((d) => d.os === selectedOS),
+    [selectedOS],
   );
 
   const heroBg = isDark ? "/images/railyard-home-dark.png" : "/images/railyard-home-light.png";
@@ -386,19 +322,23 @@ export default function Railyard() {
             </div>
 
             <div className={styles.heroStatsStrip}>
-              <article className={styles.statPill}>
-                <span className={styles.statValue}>{mapCountLabel}</span>
-                <span className={styles.statLabel}>
-                  <Translate id="railyard.stats.maps">Maps Available</Translate>
-                </span>
-              </article>
+              <Link to="/railyard/maps" className={styles.statPillLink}>
+                <article className={styles.statPill}>
+                  <span className={styles.statValue}>{mapCountLabel}</span>
+                  <span className={styles.statLabel}>
+                    <Translate id="railyard.stats.maps">Maps Available</Translate>
+                  </span>
+                </article>
+              </Link>
 
-              <article className={styles.statPill}>
-                <span className={styles.statValue}>{modCountLabel}</span>
-                <span className={styles.statLabel}>
-                  <Translate id="railyard.stats.mods">Mods Available</Translate>
-                </span>
-              </article>
+              <Link to="/railyard/mods" className={styles.statPillLink}>
+                <article className={styles.statPill}>
+                  <span className={styles.statValue}>{modCountLabel}</span>
+                  <span className={styles.statLabel}>
+                    <Translate id="railyard.stats.mods">Mods Available</Translate>
+                  </span>
+                </article>
+              </Link>
             </div>
           </div>
         </section>
@@ -486,7 +426,7 @@ export default function Railyard() {
         <section className={styles.spacerSection} aria-hidden="true" />
         <div className={styles.sectionSeparator} />
 
-        <section className={styles.solidSection}>
+        <section className={`${styles.solidSection} ${styles.allDownloadsSection}`} id="all-downloads">
           <div className={styles.container}>
             <div className={styles.sectionHeader}>
               <h2 className={styles.sectionTitle}>
@@ -496,54 +436,43 @@ export default function Railyard() {
             </div>
 
             <div className={styles.downloadsPanel}>
-              <div className={styles.osTabs}>
-                {["Windows", "macOS", "Linux"].map((os) => (
-                  <button
-                    key={os}
-                    type="button"
-                    className={`${styles.osTab} ${selectedOS === os ? styles.osTabActive : ""}`}
-                    onClick={() => setSelectedOS(os)}
-                  >
-                    {os}
-                  </button>
-                ))}
-              </div>
-
-              <div className={styles.archChips}>
-                {["x64", "arm64"].map((arch) => (
-                  <button
-                    key={arch}
-                    type="button"
-                    className={`${styles.archChip} ${selectedArch === arch ? styles.archChipActive : ""}`}
-                    onClick={() => setSelectedArch(arch)}
-                  >
-                    {arch.toUpperCase()}
-                  </button>
-                ))}
-              </div>
-
-              <div className={styles.verticalDownloadList}>
-                {filteredDownloads.map((dl) => {
-                  const isNative = dl.label === nativeOS.label;
-                  return (
-                    <Link
-                      key={dl.label}
-                      to={dl.link}
-                      className={`${styles.longDownloadButton} ${isNative ? styles.activeDownload : ""}`}
+              <div className={styles.downloadsSplitCard}>
+                <div className={styles.downloadsLeftColumn}>
+                  {downloadCatalog.map((group) => (
+                    <button
+                      key={group.os}
+                      type="button"
+                      className={`${styles.osTab} ${selectedOS === group.os ? styles.osTabActive : ""}`}
+                      onClick={() => setSelectedOS(group.os)}
                     >
-                      <span>
-                        {dl.label}
-                        {isNative && (
-                          <span className={styles.currentBadge}>
-                            <Translate id="railyard.downloads.detected">Detected</Translate>
-                          </span>
-                        )}
-                        <span className={styles.downloadMeta}>{` ${dl.type} · ${dl.size}`}</span>
-                      </span>
-                      <span className={styles.buttonArrow}>→</span>
-                    </Link>
-                  );
-                })}
+                      {group.os}
+                    </button>
+                  ))}
+                </div>
+
+                <div className={styles.downloadsRightColumn}>
+                  {selectedDownloads.map((dl) => {
+                    const isNative = dl.label === nativeOS.label;
+                    return (
+                      <Link
+                        key={dl.label}
+                        to={dl.link}
+                        className={`${styles.longDownloadButton} ${isNative ? styles.activeDownload : ""}`}
+                      >
+                        <span>
+                          {dl.label}
+                          {isNative && (
+                            <span className={styles.currentBadge}>
+                              <Translate id="railyard.downloads.detected">Detected</Translate>
+                            </span>
+                          )}
+                          <span className={styles.downloadMeta}>{` ${dl.type} · ${dl.size}`}</span>
+                        </span>
+                        <span className={styles.buttonArrow}>→</span>
+                      </Link>
+                    );
+                  })}
+                </div>
               </div>
             </div>
           </div>

@@ -26,6 +26,7 @@
     "@docusaurus/preset-classic": "^3.9.2",
     "@docusaurus/theme-classic": "^3.9.2",
     "clsx": "^2.1.1",
+    "lucide": "^0.575.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.5.0"

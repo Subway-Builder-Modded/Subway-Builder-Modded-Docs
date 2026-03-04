@@ -2,27 +2,29 @@
 
 /* === Global Text === */
 :root {
-  --ifm-link-color: #10B981;
-  --ifm-color-primary: #10B981;
-  --ifm-font-family-base: 'Inter', sans-serif;
-  --ifm-font-family-monospace: 'Fira Code', monospace;
   --ifm-color: #111111;
+  --ifm-font-color-base: var(--ifm-color);
   --ifm-description-color: #666666;
   --ifm-background-color: #DFDEDD;
   --ifm-alt-background-color: #FEFDFC;
   --ifm-border-color: #A3A3A3;
+  --ifm-link-color: #10B981;
+  --ifm-color-primary: #10B981;
+  --ifm-font-family-base: 'Inter', sans-serif;
+  --ifm-font-family-monospace: 'Fira Code', monospace;
 }
 
 [data-theme='dark'] {
-  --ifm-link-color: #62C98E;
-  --ifm-color-primary: #62C98E;
-  --ifm-font-family-base: 'Inter', sans-serif;
-  --ifm-font-family-monospace: 'Fira Code', monospace;
   --ifm-color: #E3E3E3;
+  --ifm-font-color-base: var(--ifm-color);
   --ifm-description-color: #8C8C8C;
   --ifm-background-color: #1B1B1D;
   --ifm-alt-background-color: #222222;
   --ifm-border-color: #555555;
+  --ifm-link-color: #62C98E;
+  --ifm-color-primary: #62C98E;
+  --ifm-font-family-base: 'Inter', sans-serif;
+  --ifm-font-family-monospace: 'Fira Code', monospace;
 }
 
 .DocSearch {

@@ -23,6 +23,9 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      lucide:
+        specifier: ^0.575.0
+        version: 0.575.0
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -3435,6 +3438,9 @@ packages:
 
   lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
+
+  lucide@0.575.0:
+    resolution: {integrity: sha512-+xwqZpvrqPioU8bSH49zH2xARfnKyZgIjdnfbex0CrURB3q4wNFhinYN1Z9Q3lE16Q/6N9iEXnStvyS3c70RKw==}
 
   markdown-extensions@2.0.0:
     resolution: {integrity: sha512-o5vL7aDWatOTX8LzaS1WMoaoxIiLRQJuIKKe2wAw6IeULDHaqbiqiggmx+pKvZDb1Sj+pE46Sn1T7lCqfFtg1Q==}
@@ -9769,6 +9775,8 @@ snapshots:
   lru-cache@5.1.1:
     dependencies:
       yallist: 3.1.1
+
+  lucide@0.575.0: {}
 
   markdown-extensions@2.0.0: {}
 

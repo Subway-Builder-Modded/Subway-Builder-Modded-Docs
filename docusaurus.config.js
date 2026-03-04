@@ -150,11 +150,11 @@ module.exports = {
           label: "Credits",
         },
         {
-          href: "https://github.com/Subway-Builder-Modded/Subway-Builder-Modded-Docs",
+          href: "https://github.com/Subway-Builder-Modded",
           position: "right",
           className: "navbar-icon-item",
           html: `
-            <a class="navbar-icon-link" href="https://github.com/Subway-Builder-Modded/Subway-Builder-Modded-Docs" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+            <a class="navbar-icon-link" href="https://github.com/Subway-Builder-Modded" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
               <img src="/assets/github.svg" width="24" height="24" />
               <span class="navbar-icon-link__label">GitHub</span>
             </a>
@@ -230,7 +230,7 @@ module.exports = {
             },
             {
               html: `
-                <a href="https://github.com/Subway-Builder-Modded/Subway-Builder-Modded-Docs" target="_blank" rel="noopener noreferrer" class="footer-links" style="display: inline-flex; align-items: center; gap: 4px;">
+                <a href="https://github.com/Subway-Builder-Modded" target="_blank" rel="noopener noreferrer" class="footer-links" style="display: inline-flex; align-items: center; gap: 4px;">
                   <img src="/assets/github.svg" width="14" height="14" style="vertical-align: middle; margin-right: 4px;" />
                   GitHub
                 </a>

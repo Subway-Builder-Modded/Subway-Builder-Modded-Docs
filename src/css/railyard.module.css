@@ -167,6 +167,10 @@
     border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
 
+.allDownloadsSection {
+    padding-bottom: 8px;
+}
+
 .heroTitle {
     margin: 0;
     font-size: clamp(3.1rem, 10vw, 5.5rem);
@@ -306,6 +310,12 @@
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.95rem;
+}
+
+.statPillLink {
+    text-decoration: none !important;
+    color: inherit;
+    display: block;
 }
 
 .statPill {
@@ -472,39 +482,56 @@
     margin-bottom: 1.9rem;
 }
 
-.osTabs,
-.archChips {
+.osTabs {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
     margin-bottom: 0.75rem;
 }
 
-.osTab,
-.archChip {
+.osTab {
     border: 1px solid var(--ifm-border-color);
     border-radius: 999px;
     background: transparent;
     color: var(--ifm-color);
-    padding: 0.45rem 0.85rem;
-    font-weight: 700;
+    padding: 0.58rem 0.95rem;
+    font-weight: 760;
+    font-size: 0.95rem;
+    min-height: 44px;
     cursor: pointer;
     transition: all 0.18s ease;
 }
 
-.osTab:hover,
-.archChip:hover {
+.osTab:hover {
     border-color: var(--railyard-primary);
 }
 
-.osTabActive,
-.archChipActive {
+.osTabActive {
     border-color: var(--railyard-primary);
     background: rgba(var(--railyard-glow), 0.14);
 }
 
-.verticalDownloadList {
-    margin-top: 0.25rem;
+
+.downloadsSplitCard {
+    display: grid;
+    grid-template-columns: minmax(160px, 208px) minmax(300px, 1fr);
+    gap: 1rem;
+    align-items: center;
+}
+
+.downloadsLeftColumn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.58rem;
+    min-height: 100%;
+}
+
+.downloadsRightColumn {
+    display: grid;
+    grid-template-rows: repeat(2, minmax(68px, 1fr));
+    align-content: center;
+    gap: 0.62rem;
 }
 
 .longDownloadButton {
@@ -516,9 +543,10 @@
     border-radius: 12px;
     color: var(--ifm-color) !important;
     text-decoration: none !important;
-    font-weight: 700;
-    padding: 18px;
-    margin-bottom: 10px;
+    font-weight: 720;
+    min-height: 68px;
+    padding: 14px 16px;
+    margin-bottom: 0;
     transition: all 0.22s ease;
 }
 
@@ -567,6 +595,7 @@
     border-top: 1px solid var(--ifm-border-color);
     padding-top: clamp(8px, 1.2vw, 14px);
     padding-bottom: 8px;
+    margin-bottom: 0;
 }
 
 .bar {
@@ -603,6 +632,17 @@
     }
 
     .sectionHeader {
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 820px) {
+    .downloadsSplitCard {
+        grid-template-columns: 1fr;
+    }
+
+    .downloadsLeftColumn {
+        flex-direction: row;
         flex-wrap: wrap;
     }
 }
